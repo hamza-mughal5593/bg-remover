@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g1.xml" value="0.234" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g2.xml" value="0.234" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g3.xml" value="0.234" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g4.xml" value="0.234" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g5.xml" value="0.234" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g6.xml" value="0.234" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g7.xml" value="0.234" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g8.xml" value="0.234" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/gradient_bg.xml" value="0.3015625" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/activity_crop.xml" value="0.358695652173913" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/activity_editor.xml" value="0.35260416666666666" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/activity_image_selector.xml" value="0.2644927536231884" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/activity_remove_bg.xml" value="0.1875" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/bottom_sheet_image_picker.xml" value="0.2644927536231884" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/clipart.xml" value="0.358695652173913" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_bg.xml" value="0.358695652173913" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_editor.xml" value="0.358695652173913" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_filters.xml" value="0.75" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_sticker_types.xml" value="2.0" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/toolbar_activity_main.xml" value="0.27239583333333334" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/toolbar_editor.xml" value="0.358695652173913" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/xml/file_paths.xml" value="0.25271739130434784" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
