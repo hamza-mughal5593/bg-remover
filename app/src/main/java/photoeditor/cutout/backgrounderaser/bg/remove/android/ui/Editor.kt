@@ -8,42 +8,35 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zomato.photofilters.SampleFilters
 import com.zomato.photofilters.imageprocessors.Filter
 import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
-import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.BgAdapter
-import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.EditorAdapter
-import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.FiltersAdapter
-import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.StickersAdapter
+import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.*
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityEditorBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.models.GenerealEditorModel
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.ClipArt
 
 
-class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.filterHandler,BgAdapter.clikHandleBg {
+class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.filterHandler,BgAdapter.clikHandleBg,StickersAdapter.clickHandler,StickersSubAdapter.clickHandler {
 
     private lateinit var binding: ActivityEditorBinding
     private val editorOptions: ArrayList<GenerealEditorModel> = ArrayList()
+    var count=100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         System.loadLibrary("NativeImageProcessor");
-
-
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.model)
 
         changeStatusBarColor()
         initializeEditorOptionsList()
         initializeEditorOptionsRecyclerView()
-
-//        val ca = ClipArt(this,bitmap,binding.bgMain.width-30,binding.bgMain.height-30)
-//        binding.bgMain.addView(ca)
 
     }
 
@@ -89,21 +82,21 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         bgClickHandlers()
     }
 
-
-
-
     private fun initializeFiltersRecyclerView(filters:ArrayList<GenerealEditorModel>)
     {
         binding.recyclerFilters.layoutManager = LinearLayoutManager(this@Editor, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerFilters.adapter = FiltersAdapter(this@Editor, filters, this)
+
+        filterBackAndNextClick()
+
     }
 
     override fun onSelectFilter(position:Int)
     {
         if(bitmap !=null)
         {
-            val outputImage = applyFilter(position,bitmap!!)
-            binding.image.setImageBitmap(outputImage)
+            filteredImage = applyFilter(position,bitmap!!)
+            binding.image.setImageBitmap(filteredImage)
 
         }else
         {
@@ -169,7 +162,6 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         }
     }
 
-
     override fun onCropClick()
     {
         bitmap?.let {
@@ -186,24 +178,86 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
         val stickerTypes= initializeStickersTypes()
         initializeStickersTypesRecyclerView(stickerTypes)
+        val stickers= initializeStickersListOne()
+        initializeStickersRecyclerView(stickers)
+
+
     }
 
     private fun initializeStickersTypesRecyclerView (stickerTypes:ArrayList<Int>)
     {
         binding.recyclerStickersMain.layoutManager = LinearLayoutManager(this@Editor, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerStickersMain.adapter = StickersAdapter(stickerTypes)
+        binding.recyclerStickersMain.adapter = StickersAdapter(stickerTypes,this)
     }
     private fun initializeStickersRecyclerView (sticker:ArrayList<Int>)
     {
-        binding.recyclerStickersSub.layoutManager = LinearLayoutManager(this@Editor, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerStickersMain.adapter = StickersAdapter(sticker)
+        binding.recyclerStickersSub.layoutManager = GridLayoutManager(this@Editor, 4)
+        binding.recyclerStickersSub.adapter = StickersSubAdapter(sticker,this)
     }
 
 
+    override fun onClickStickerType(position: Int)
+    {
+        if(position == 0)
+        {
+            val stickers= initializeStickersListOne()
+            initializeStickersRecyclerView(stickers)
+        }
+        if(position == 1)
+        {
+            val stickers= initializeStickersListTwo()
+            initializeStickersRecyclerView(stickers)
+        }
+        if(position == 2)
+        {
+            val stickers= initializeStickersListThree()
+            initializeStickersRecyclerView(stickers)
+        }
+        if(position == 3)
+        {
+            val stickers= initializeStickersListFour()
+            initializeStickersRecyclerView(stickers)
+        }
+        if(position == 4)
+        {
+            val stickers= initializeStickersListFive()
+            initializeStickersRecyclerView(stickers)
+        }
+    }
+
+    override fun onClickSticker(sticker: Int)
+    {
+        val ca = ClipArt(this, sticker)
+        binding.bgMain.addView(ca)
+        ca.id=++count
+    }
+
+
+    fun filterBackAndNextClick ()
+    {
+        binding.filterBack.setOnClickListener {
+
+            binding.filtersMainLayout.visibility=View.GONE
+            binding.recyclerEditingOptions.visibility=View.VISIBLE
+
+            binding.image.setImageBitmap(bitmap)
+
+        }
+
+        binding.filterNext.setOnClickListener {
+
+            binding.filtersMainLayout.visibility=View.GONE
+            binding.recyclerEditingOptions.visibility=View.VISIBLE
+
+            binding.image.setImageBitmap(filteredImage)
+
+        }
+    }
 
     companion object
     {
         var bitmap: Bitmap?=null
+        var filteredImage: Bitmap?=null
 
     }
 

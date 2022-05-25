@@ -3,12 +3,13 @@ package photoeditor.cutout.backgrounderaser.bg.remove.android.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.RecyclerEditorBinding
+import photoeditor.cutout.backgrounderaser.bg.remove.android.R
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.RecyclerStickerTypesBinding
 
-class StickersAdapter(private val stickerTypes:ArrayList<Int>) : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
+class StickersAdapter(private val stickerTypes:ArrayList<Int>,val itemClick:clickHandler) : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
 
 
+    var row_index=-1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = RecyclerStickerTypesBinding.inflate(
@@ -24,6 +25,22 @@ class StickersAdapter(private val stickerTypes:ArrayList<Int>) : RecyclerView.Ad
 
         holder.bind(stickerTypes[position])
 
+        holder.itemView.setOnClickListener {
+
+            row_index=position
+            itemClick.onClickStickerType(position)
+            notifyDataSetChanged()
+        }
+
+        if(row_index == position)
+        {
+            holder.binding.bg.setBackgroundResource(R.color.theme_color)
+        }else
+        {
+            holder.binding.bg.setBackgroundResource(R.color.white)
+
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -32,7 +49,7 @@ class StickersAdapter(private val stickerTypes:ArrayList<Int>) : RecyclerView.Ad
     }
 
 
-    public class ViewHolder(private val binding: RecyclerStickerTypesBinding) : RecyclerView.ViewHolder(binding.root)
+    public class ViewHolder( val binding: RecyclerStickerTypesBinding) : RecyclerView.ViewHolder(binding.root)
     {
 
         fun bind (stickerType:Int)
@@ -40,6 +57,11 @@ class StickersAdapter(private val stickerTypes:ArrayList<Int>) : RecyclerView.Ad
             binding.sticker.setImageResource(stickerType)
         }
 
+    }
+
+    interface clickHandler
+    {
+      fun onClickStickerType(position:Int)
     }
 
 }

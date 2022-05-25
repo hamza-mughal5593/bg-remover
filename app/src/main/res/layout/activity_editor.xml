@@ -52,16 +52,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#2C2C2C"
-            android:visibility="gone">
+            android:visibility="gone"
+            >
 
             <RelativeLayout
                 android:id="@+id/filter_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp">
 
                 <ImageView
-                    android:id="@+id/back"
+                    android:id="@+id/filter_back"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/back" />
@@ -76,7 +78,7 @@
                     android:textSize="@dimen/_15sdp" />
 
                 <ImageView
-                    android:id="@+id/next"
+                    android:id="@+id/filter_next"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
@@ -290,18 +292,20 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_stickers_main"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/stickers_main_layout"
                 android:background="#2C2C2C"
-                android:paddingVertical="@dimen/_10sdp" />
+                android:layout_centerHorizontal="true"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_stickers_sub"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_below="@+id/recycler_stickers_main"
                 android:background="#2C2C2C"
-                android:paddingVertical="@dimen/_10sdp" />
+                android:layout_marginTop="@dimen/_10sdp"
+                />
         </RelativeLayout>
 
 

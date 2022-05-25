@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/g1.xml" value="0.2703125" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/activity_editor.xml" value="0.176" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/clipart.xml" value="0.14855072463768115" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g1.xml" value="0.234" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g2.xml" value="0.234" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g3.xml" value="0.234" />
@@ -19,10 +22,12 @@
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/activity_remove_bg.xml" value="0.1875" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/bottom_sheet_image_picker.xml" value="0.2644927536231884" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/clipart.xml" value="0.358695652173913" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/clipart_text.xml" value="0.358695652173913" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_bg.xml" value="0.358695652173913" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_editor.xml" value="0.358695652173913" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_filters.xml" value="0.75" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_sticker_types.xml" value="2.0" />
+        <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/recycler_stickers.xml" value="0.358695652173913" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/toolbar_activity_main.xml" value="0.27239583333333334" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/toolbar_editor.xml" value="0.358695652173913" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/xml/file_paths.xml" value="0.25271739130434784" />
