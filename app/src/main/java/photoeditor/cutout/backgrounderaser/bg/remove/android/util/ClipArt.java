@@ -26,6 +26,7 @@ public class ClipArt extends RelativeLayout {
     ImageButton btndel;
     ImageButton btnrot;
     ImageButton btnscl;
+    ImageView clipart;
     RelativeLayout clip;
     Context cntx;
     boolean freeze = false;
@@ -243,9 +244,6 @@ public class ClipArt extends RelativeLayout {
 
         layoutParams = new RelativeLayout.LayoutParams(this.text.getWidth(),this.text.getHeight() );
 
-
-        this.text.
-
         setOnTouchListener(new View.OnTouchListener() {
             final GestureDetector gestureDetector = new GestureDetector(ClipArt.this.cntx,
                     new GestureDetector.SimpleOnGestureListener() {
@@ -397,12 +395,15 @@ public class ClipArt extends RelativeLayout {
         this.btndel.setVisibility(View.INVISIBLE);
         this.btnrot.setVisibility(View.INVISIBLE);
         this.btnscl.setVisibility(View.INVISIBLE);
+        this.image.setBackground(null);
     }
 
     public void enableAll() {
         this.btndel.setVisibility(View.VISIBLE);
         this.btnrot.setVisibility(View.VISIBLE);
         this.btnscl.setVisibility(View.VISIBLE);
+        this.image.setBackgroundColor(cntx.getResources().getColor(R.color.transparent));
+
     }
 
     public ImageView getImageView() {

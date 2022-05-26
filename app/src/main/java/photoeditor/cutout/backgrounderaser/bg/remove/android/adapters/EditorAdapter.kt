@@ -55,6 +55,10 @@ class EditorAdapter(val context: Context, private val options:ArrayList<Genereal
             itemClick.onStickerClick()
 
         }
+        if(position == 3)
+        {
+            itemClick.onAdjustmentsClick()
+        }
 
     }
 
@@ -74,6 +78,7 @@ class EditorAdapter(val context: Context, private val options:ArrayList<Genereal
         fun onBgClick()
         fun onCropClick()
         fun onStickerClick()
+        fun onAdjustmentsClick()
     }
 
 }

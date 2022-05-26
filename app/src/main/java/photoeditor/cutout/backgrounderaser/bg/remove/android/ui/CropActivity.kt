@@ -4,10 +4,16 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.isseiaoki.simplecropview.CropImageView
 import com.isseiaoki.simplecropview.callback.CropCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
 import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.CropAdapter
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityCropBinding
@@ -21,7 +27,6 @@ class CropActivity : AppCompatActivity(),CropAdapter.clickHandler {
     private lateinit var binding: ActivityCropBinding
     private val cropList:ArrayList<CropModel> = ArrayList()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCropBinding.inflate(layoutInflater)
@@ -29,21 +34,22 @@ class CropActivity : AppCompatActivity(),CropAdapter.clickHandler {
         initializeCropList()
         initializeCropRecyclerView()
 
+        binding.cropImageView.imageBitmap=Editor.bitmap
+
         binding.crop.setOnClickListener {
 
-           val uri = saveToInternalStorage(this,Editor.bitmap!!,"Crop")
-            binding.cropImageView.crop(Uri.fromFile( File("${uri!!}/Crop").absoluteFile))
-                .execute(object : CropCallback {
-                    override fun onSuccess(cropped: Bitmap) {
-                        Editor.bitmap=cropped
-                        finish()
-                    }
+            binding.progressBar.visibility= View.VISIBLE
+//            val uri = saveToInternalStorage(this,Editor.bitmap!!,"Crop")
+            CoroutineScope(IO).launch {
+               val croppedBitmap=  binding.cropImageView.croppedBitmap
+                Editor.bitmap=croppedBitmap
+                withContext(Main)
+                {
+                    binding.progressBar.visibility= View.VISIBLE
+                    finish()
+                }
+            }
 
-                    override fun onError(e: Throwable) {
-
-                        Log.i("BBC", "onError: ${e.message}")
-                    }
-                })
         }
 
 

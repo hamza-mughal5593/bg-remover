@@ -23,7 +23,7 @@ fun initializeFiltersList() :ArrayList<GenerealEditorModel>{
 }
 
 
- fun applyFilter (position: Int,bitmap:Bitmap): Bitmap?
+ suspend fun applyFilter (position: Int,bitmap:Bitmap): Bitmap?
 {
     val bitmaps= bitmap.copy(Bitmap.Config.ARGB_8888, true)
     var outputImage:Bitmap?=null
