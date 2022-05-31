@@ -26,6 +26,7 @@ fun initializeAdjustmentsList(): ArrayList<GenerealEditorModel> {
     adjustments.add(GenerealEditorModel("Highlights", R.drawable.highlights))
     adjustments.add(GenerealEditorModel("Shadow", R.drawable.sahdow))
     adjustments.add(GenerealEditorModel("Temp", R.drawable.temp))
+    adjustments.add(GenerealEditorModel("Blur", R.drawable.blur))
 
     return adjustments
 }
@@ -38,58 +39,58 @@ suspend fun brightness(value: Int, bitmap: Bitmap): Bitmap {
 
 }
 
-fun saturation(value: Int, bitmap: Bitmap): Bitmap {
+fun saturation(value: Float, bitmap: Bitmap): Bitmap {
     val myFilter = Filter()
-    if (value == 0) {
+    if (value in 0.1f..0.9f) {
         myFilter.addSubFilter(SaturationSubFilter(0.1f))
-    } else if (value == 1) {
+    } else if  (value in 1f..1.9f) {
         myFilter.addSubFilter(SaturationSubFilter(0.2f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
         myFilter.addSubFilter(SaturationSubFilter(0.4f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
         myFilter.addSubFilter(SaturationSubFilter(0.6f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
         myFilter.addSubFilter(SaturationSubFilter(0.8f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
         myFilter.addSubFilter(SaturationSubFilter(1f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
         myFilter.addSubFilter(SaturationSubFilter(1.1f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
         myFilter.addSubFilter(SaturationSubFilter(1.3f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
         myFilter.addSubFilter(SaturationSubFilter(1.5f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
         myFilter.addSubFilter(SaturationSubFilter(1.7f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
         myFilter.addSubFilter(SaturationSubFilter(2f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
     return myFilter.processFilter(mutableBitmap)
 }
 
-suspend fun contras(value: Int, bitmap: Bitmap): Bitmap {
+suspend fun contras(value: Float, bitmap: Bitmap): Bitmap {
     val myFilter = Filter()
-    if (value == 0) {
+    if (value in 0.1f..0.9f) {
         myFilter.addSubFilter(ContrastSubFilter(0.1f))
-    } else if (value == 1) {
+    } else if (value in 1f..1.9f) {
         myFilter.addSubFilter(ContrastSubFilter(0.2f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
         myFilter.addSubFilter(ContrastSubFilter(0.4f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
         myFilter.addSubFilter(ContrastSubFilter(0.6f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
         myFilter.addSubFilter(ContrastSubFilter(0.8f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
         myFilter.addSubFilter(ContrastSubFilter(1f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
         myFilter.addSubFilter(ContrastSubFilter(1.1f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
         myFilter.addSubFilter(ContrastSubFilter(1.3f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
         myFilter.addSubFilter(ContrastSubFilter(1.5f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
         myFilter.addSubFilter(ContrastSubFilter(1.7f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
         myFilter.addSubFilter(ContrastSubFilter(2f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -97,29 +98,40 @@ suspend fun contras(value: Int, bitmap: Bitmap): Bitmap {
 
 }
 
-suspend fun exposure(context: Context, value: Int, bitmap: Bitmap): Bitmap {
+suspend fun exposure(context: Context, value: Float, bitmap: Bitmap): Bitmap {
     val gpuImage = GPUImage(context)
-    if (value == 0) {
+    if (value in 0.1f..0.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(-1.9f))
-    } else if (value == 1) {
+    } else if (value in 1f..1.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(-1.6f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(-1.4f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(-1.2f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(-1.0f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(0.0f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(1.0f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(1.2f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(1.4f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(1.7f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageExposureFilter(2.0f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -128,29 +140,40 @@ suspend fun exposure(context: Context, value: Int, bitmap: Bitmap): Bitmap {
 
 }
 
-suspend fun hue(context: Context, value: Int, bitmap: Bitmap): Bitmap {
+suspend fun hue(context: Context, value: Float, bitmap: Bitmap): Bitmap {
     val gpuImage = GPUImage(context)
-    if (value == 0) {
-        gpuImage.setFilter(GPUImageHueFilter(500f))
-    } else if (value == 1) {
+    if (value in 0.1f..0.9f) {
+        gpuImage.setFilter(GPUImageFilter())
+//        gpuImage.setFilter(GPUImageHueFilter(500f))
+    } else if (value in 1f..1.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(470f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(440f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(410f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(380f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(360.0f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(300f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(250f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(200f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(150f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
+        gpuImage.setFilter(GPUImageFilter())
         gpuImage.setFilter(GPUImageHueFilter(100f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -158,29 +181,29 @@ suspend fun hue(context: Context, value: Int, bitmap: Bitmap): Bitmap {
     return gpuImage.bitmapWithFilterApplied
 }
 
-suspend fun sharpen(context: Context, value: Int, bitmap: Bitmap): Bitmap {
+suspend fun sharpen(context: Context, value: Float, bitmap: Bitmap): Bitmap {
     val gpuImage = GPUImage(context)
-    if (value == 0) {
+    if (value in 0f..0.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(-1.0f))
-    } else if (value == 1) {
+    } else if (value in 1f..1.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(-0.8f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(-0.6f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(-0.4f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(-0.2f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(0.0f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(0.2f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(0.4f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(0.6f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
         gpuImage.setFilter(GPUImageSharpenFilter(0.8f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
         gpuImage.setFilter(GPUImageSharpenFilter(1.0f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -188,29 +211,29 @@ suspend fun sharpen(context: Context, value: Int, bitmap: Bitmap): Bitmap {
     return gpuImage.bitmapWithFilterApplied
 }
 
-suspend fun vibrance(context: Context, value: Int, bitmap: Bitmap): Bitmap {
+suspend fun vibrance(context: Context, value: Float, bitmap: Bitmap): Bitmap {
     val gpuImage = GPUImage(context)
-    if (value == 0) {
+    if (value in 0f..0.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(-1.0f))
-    } else if (value == 1) {
+    } else if (value in 1f..1.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(-0.8f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(-0.6f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(-0.4f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(-0.2f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(0.0f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(0.2f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(0.4f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(0.6f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
         gpuImage.setFilter(GPUImageVibranceFilter(0.8f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
         gpuImage.setFilter(GPUImageVibranceFilter(1.0f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -218,9 +241,9 @@ suspend fun vibrance(context: Context, value: Int, bitmap: Bitmap): Bitmap {
     return gpuImage.bitmapWithFilterApplied
 }
 
-suspend fun vignette(context: Context, value: Int, bitmap: Bitmap): Bitmap {
+suspend fun vignette(context: Context, value: Float, bitmap: Bitmap): Bitmap {
     val gpuImage = GPUImage(context)
-    if (value == 5) {
+    if (value in 5f..5.9f) {
         gpuImage.setFilter(
             GPUImageVignetteFilter(
                 PointF(0.5f, 0.5f),
@@ -229,7 +252,7 @@ suspend fun vignette(context: Context, value: Int, bitmap: Bitmap): Bitmap {
                 0.7f
             )
         )
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
         gpuImage.setFilter(
             GPUImageVignetteFilter(
                 PointF(0.5f, 0.5f),
@@ -238,7 +261,7 @@ suspend fun vignette(context: Context, value: Int, bitmap: Bitmap): Bitmap {
                 0.7f
             )
         )
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
         gpuImage.setFilter(
             GPUImageVignetteFilter(
                 PointF(0.5f, 0.5f),
@@ -247,7 +270,7 @@ suspend fun vignette(context: Context, value: Int, bitmap: Bitmap): Bitmap {
                 0.7f
             )
         )
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
         gpuImage.setFilter(
             GPUImageVignetteFilter(
                 PointF(0.5f, 0.5f),
@@ -256,7 +279,7 @@ suspend fun vignette(context: Context, value: Int, bitmap: Bitmap): Bitmap {
                 0.7f
             )
         )
-    } else if (value == 1) {
+    } else if (value in 1f..1.9f) {
         gpuImage.setFilter(
             GPUImageVignetteFilter(
                 PointF(0.5f, 0.5f),
@@ -265,7 +288,7 @@ suspend fun vignette(context: Context, value: Int, bitmap: Bitmap): Bitmap {
                 0.7f
             )
         )
-    } else if (value == 0) {
+    } else if (value in 0f..0.9f) {
         gpuImage.setFilter(
             GPUImageVignetteFilter(
                 PointF(0.5f, 0.5f),
@@ -280,29 +303,29 @@ suspend fun vignette(context: Context, value: Int, bitmap: Bitmap): Bitmap {
     return gpuImage.bitmapWithFilterApplied
 }
 
-suspend fun shadow(context: Context, value: Int, bitmap: Bitmap): Bitmap {
+suspend fun shadow(context: Context, value: Float, bitmap: Bitmap): Bitmap {
     val gpuImage = GPUImage(context)
-    if (value == 0) {
+    if (value in 0f..0.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(1.0f, 1.0f))
-    } else if (value == 1) {
+    } else if (value in 1f..1.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.8f, 1.0f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.46f, 1.0f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.4f, 1.0f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.2f, 1.0f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.0f, 1.0f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.0f, 0.8f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.0f, 0.6f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.0f, 0.4f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.0f, 0.2f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
         gpuImage.setFilter(GPUImageHighlightShadowFilter(0.0f, 0.0f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -310,29 +333,29 @@ suspend fun shadow(context: Context, value: Int, bitmap: Bitmap): Bitmap {
     return gpuImage.bitmapWithFilterApplied
 }
 
-suspend fun temp(context: Context, value: Int, bitmap: Bitmap): Bitmap {
+suspend fun temp(context: Context, value: Float, bitmap: Bitmap): Bitmap {
     val gpuImage = GPUImage(context)
-    if (value == 0) {
+    if (value in 0f..0.9f) {
         gpuImage.setFilter(GPUImageHueFilter(385f))
-    } else if (value == 1) {
+    } else if (value in 1f..1.9f) {
         gpuImage.setFilter(GPUImageHueFilter(380f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
         gpuImage.setFilter(GPUImageHueFilter(375f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
         gpuImage.setFilter(GPUImageHueFilter(370f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
         gpuImage.setFilter(GPUImageHueFilter(365f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
         gpuImage.setFilter(GPUImageHueFilter(360.0f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
         gpuImage.setFilter(GPUImageHueFilter(358f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
         gpuImage.setFilter(GPUImageHueFilter(356f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
         gpuImage.setFilter(GPUImageHueFilter(352f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
         gpuImage.setFilter(GPUImageHueFilter(346f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
         gpuImage.setFilter(GPUImageHueFilter(340f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -347,29 +370,32 @@ suspend fun highLights(value: Int, bitmap: Bitmap): Bitmap {
     return myFilter.processFilter(mutableBitmap)
 }
 
-suspend fun blur(context: Context, value: Int, bitmap: Bitmap): Bitmap {
+suspend fun blur(context: Context, value: Float, bitmap: Bitmap): Bitmap {
+
+
     val gpuImage = GPUImage(context)
-    if (value == 0) {
+
+    if (value in 0f..0.1f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.0f))
-    } else if (value == 1) {
+    } else if (value in 1f..1.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.1f))
-    } else if (value == 2) {
+    } else if (value in 2f..2.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.2f))
-    } else if (value == 3) {
+    } else if (value in 3f..3.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.3f))
-    } else if (value == 4) {
+    } else if (value in 4f..4.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.4f))
-    } else if (value == 5) {
+    } else if (value in 5f..5.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.5f))
-    } else if (value == 6) {
+    } else if (value in 6f..6.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.6f))
-    } else if (value == 7) {
+    } else if (value in 7f..7.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.7f))
-    } else if (value == 8) {
+    } else if (value in 8f..8.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.8f))
-    } else if (value == 9) {
+    } else if (value in 9f..9.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.9f))
-    } else if (value == 10) {
+    } else if (value == 10f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(1.0f))
     }
     val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)

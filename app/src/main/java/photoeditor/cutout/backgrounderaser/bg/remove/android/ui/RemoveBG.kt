@@ -43,7 +43,6 @@ class RemoveBG : AppCompatActivity()
         val path = intent.getStringExtra("path")
         binding.image.setImageURI(Uri.parse(path))
 
-        //val bitmap= getBitmapFromView(binding.layout)
 
         Log.i("BBC", "onCreate: ${binding.layout.measuredWidth}")
         Log.i("BBC", "onCreate: ${binding.layout.measuredHeight}")

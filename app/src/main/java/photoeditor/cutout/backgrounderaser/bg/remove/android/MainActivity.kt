@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var backPress: Boolean = false
+    var bgRemover=true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,105 +39,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun abc() {
-
-    }
-
-
-//    private fun doBackgroundRemoval(frame: Mat): Mat? {
-//        // init
-//        val hsvImg = Mat()
-//        val hsvPlanes: List<Mat> = ArrayList()
-//        val thresholdImg = Mat()
-//
-//        // threshold the image with the histogram average value
-//        hsvImg.create(frame.size(), CvType.CV_8U)
-//        Imgproc.cvtColor(frame, hsvImg, Imgproc.COLOR_BGR2HSV)
-//        Core.split(hsvImg, hsvPlanes)
-//        val threshValue = getHistAverage(hsvImg, hsvPlanes[0])
-////        if (this.inverse.isSelected()) threshold(
-////            hsvPlanes[0],
-////            thresholdImg,
-////            threshValue,
-////            179.0,
-////            Imgproc.THRESH_BINARY_INV
-////        ) else
-////
-//        threshold(
-//            hsvPlanes[0], thresholdImg, threshValue, 179.0, Imgproc.THRESH_BINARY
-//        )
-//        Imgproc.blur(thresholdImg, thresholdImg, Size(5.0, 5.0))
-//
-//        // dilate to fill gaps, erode to smooth edges
-//        Imgproc.dilate(thresholdImg, thresholdImg, Mat(), Point(-1.0, 1.0), 6)
-//        Imgproc.erode(thresholdImg, thresholdImg, Mat(), Point(-1.0, 1.0), 6)
-//        threshold(thresholdImg, thresholdImg, threshValue, 179.0, Imgproc.THRESH_BINARY)
-//
-//        // create the new image
-//        val foreground = Mat(frame.size(), CvType.CV_8UC3, Scalar(255.0, 255.0, 255.0))
-//        frame.copyTo(foreground, thresholdImg)
-//
-//
-//        //Imgproc.cvtColor(seedsImage, tmp, Imgproc.COLOR_RGB2BGRA);
-//        // Imgproc.cvtColor(seedsImage, tmp, Imgproc.COLOR_GRAY2RGBA, 4)
-//        val bmp = Bitmap.createBitmap(foreground.cols(), foreground.rows(), Bitmap.Config.ARGB_8888)
-//        Utils.matToBitmap(foreground, bmp)
-//
-//        binding.img.setImageBitmap(bmp)
-//
-//        return foreground
-//    }
-//
-//
-//    private fun doCanny(frame: Mat): Mat? {
-//        val threshold = 0.0
-//        // init
-//        val grayImage = Mat()
-//        val detectedEdges = Mat()
-//
-//        // convert to grayscale
-//        Imgproc.cvtColor(frame, grayImage, Imgproc.COLOR_BGR2GRAY)
-//
-//        // reduce noise with a 3x3 kernel
-//        Imgproc.blur(grayImage, detectedEdges, Size(3.0, 3.0))
-//
-//        // canny detector, with ratio of lower:upper threshold of 3:1
-//        Imgproc.Canny(detectedEdges, detectedEdges, threshold, threshold * 3, 3, false)
-//
-//        // using Canny's output as a mask, display the result
-//        val dest = Mat()
-//        Core.add(dest, Scalar.all(0.0), dest)
-//        frame.copyTo(dest, detectedEdges)
-//        return dest
-//    }
-//
-//
-//    private fun getHistAverage(hsvImg: Mat, hueValues: Mat): Double {
-//        // init
-//        var average = 0.0
-//        val hist_hue = Mat()
-//        val histSize = MatOfInt(180)
-//        val hue: MutableList<Mat> = ArrayList()
-//        hue.add(hueValues)
-//
-//        // compute the histogram
-//        Imgproc.calcHist(
-//            hue,
-//            MatOfInt(0),
-//            Mat(),
-//            hist_hue,
-//            histSize,
-//            MatOfFloat(0.toFloat(), 179.toFloat())
-//        )
-//
-//        // get the average for each bin
-//        for (h in 0..179) {
-//            average += hist_hue[h, 0][0] * h
-//        }
-//        return average / hsvImg.size().height / hsvImg.size().width.also { average = it }
-//    }
-//
-
     private fun changeStatusBarColor() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.black)
     }
@@ -146,13 +48,13 @@ class MainActivity : AppCompatActivity() {
 
             showImagePickerLayout()
             backPress = true
+            bgRemover=true
         }
         binding.cvEditor.setOnClickListener {
 
-            // showImagePickerLayout()
-            // backPress = true
-            val intent = Intent(this@MainActivity, Editor::class.java)
-            startActivity(intent)
+            showImagePickerLayout()
+            backPress = true
+            bgRemover=false
 
         }
     }
@@ -207,32 +109,18 @@ class MainActivity : AppCompatActivity() {
             if (requestCode == 1 && data != null) {
                 if (data.data != null) {
                     val imagePath: String = data.data!!.toString()
-                    Log.i("BBC", "onActivityResult: ${imagePath}")
 
-                    val intent = Intent(this, RemoveBG::class.java)
-                    intent.putExtra("path", imagePath)
-                    startActivity(intent)
-//
-//                    try {
-//                        val bitmap = MediaStore.Images.Media.getBitmap(
-//                            this.getContentResolver(),
-//                            Uri.parse(data.data!!.toString())
-//                        )
-//
-//                        val mat = Mat()
-//                        val bmp32: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-//                        Utils.bitmapToMat(bmp32, mat)
-//
-//
-//                       // var man = Imgcodecs.imread(data.data!!.toString())
-//                    //   val man = doCanny(mat)
-//                        doBackgroundRemoval(mat)
-//
-//                    } catch (e: java.lang.Exception) {
-//
-//                        Log.i("BBC", "onActivityResult: Exception ${e.message}")
-//
-//                    }
+                      if(bgRemover)
+                      {
+                          val intent = Intent(this, RemoveBG::class.java)
+                          intent.putExtra("path", imagePath)
+                          startActivity(intent)
+                      }else
+                      {
+                          val intent = Intent(this, Editor::class.java)
+                          intent.putExtra("path", imagePath)
+                          startActivity(intent)
+                      }
 
                 }
             }

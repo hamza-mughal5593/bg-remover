@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.RecyclerBgBinding
-import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.RecyclerEditorBinding
 
 class BgAdapter(val context:Context,val bgList:ArrayList<Int>,val itemClick:clikHandleBg) : RecyclerView.Adapter<BgAdapter.ViewHolder>() {
 
