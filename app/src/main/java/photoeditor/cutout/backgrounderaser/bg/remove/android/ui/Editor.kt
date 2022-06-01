@@ -34,9 +34,11 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View.OnTouchListener
 import android.provider.MediaStore
-
-
-
+import android.app.ActivityManager
+import android.content.Context
+import android.graphics.ImageDecoder
+import java.lang.Exception
+import kotlin.math.roundToInt
 
 
 class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.filterHandler,
@@ -66,6 +68,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
     var copiedBitmap: Bitmap? = null
 
+    var bitmapHeight=0
+    var bitmapWidth=0
+    var divisor=0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditorBinding.inflate(layoutInflater)
@@ -76,12 +82,25 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         startEditor()
     }
 
-    fun startEditor ()
+    private fun startEditor ()
     {
         CoroutineScope(IO).launch {
             val path = intent.getStringExtra("path")
-            bitmap = MediaStore.Images.Media.getBitmap(contentResolver,Uri.parse(path))
-            //bitmap = scaleDown(bitmap!!, 1000f, true)
+            bitmap = getBitmapFromUri(this@Editor,Uri.parse(path))
+
+            Log.i("BBC", "Before width---- ${bitmap!!.width}")
+            Log.i("BBC", "Before height----${bitmap!!.height}")
+
+            if(bitmap == null)
+            {
+                return@launch
+            }
+            val ram=checkRAM(this@Editor)
+            bitmap = resizeImage(ram, bitmap!!.width, bitmap!!.height)
+
+            Log.i("BBC", "width---- ${bitmap!!.width}")
+            Log.i("BBC", "height----${bitmap!!.height}")
+
             adjustedImage = bitmap
             copiedBitmap=bitmap
 
@@ -174,6 +193,9 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
             binding.image.setImageBitmap(bitmap)
 
+
+
+
         }
 
         binding.filterNext.setOnClickListener {
@@ -192,7 +214,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.progressBar.visibility = View.VISIBLE
 
             CoroutineScope(IO).launch {
-                filteredImage = applyFilter(position, bitmap!!)
+                filteredImage = applyFilter(position, bitmap!!,this@Editor)
 
                 withContext(Main)
                 {
@@ -384,6 +406,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.recyclerEditingOptions.visibility = View.VISIBLE
 
             binding.image.setImageBitmap(bitmap)
+            removeAdjusmnetsEffects()
 
         }
 
@@ -394,14 +417,45 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.recyclerEditingOptions.visibility = View.VISIBLE
 
             //bitmap = adjustedImage
-            binding.image.setImageBitmap(copiedBitmap)
+            binding.image.setImageBitmap(adjustedImage)
 
         }
     }
 
+
+    private fun removeAdjusmnetsEffects ()
+    {
+        brightness = 0
+        contras= -600.0f
+        vibrance = -600.0f
+        saturation= -600.0f
+        hue = -600.0f
+        exposure = -600.0f
+        sharpen = -600.0f
+        vigentee = -600.0f
+        highLights = 0
+        temp = -600.0f
+        blur= -600.0f
+        shadow= -600.0f
+
+        binding.brightness.progress=100
+        binding.contrass.progress=50
+        binding.saturation.progress=50
+        binding.exposure.progress=50
+        binding.hue.progress=50
+        binding.sharpen.progress=0
+        binding.vibrance.progress=50
+        binding.vigentee.progress=0
+        binding.highLights.progress=50
+        binding.temp.progress=50
+        binding.blur.progress=0
+
+        binding.progressBar.visibility=View.GONE
+
+    }
+
     override fun onAdjustmentClick(position: Int) {
 
-        testing(position)
         binding.adjustmentLayout.visibility = View.VISIBLE
 
         if (position == 0) {
@@ -457,7 +511,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Vibrance"
-            binding.adjustmentValue.text = "${binding.vibrance.progress}"
+            binding.adjustmentValue.text = "${(binding.vibrance.progress)-50}"
 
         }
         if (position == 3) {
@@ -475,7 +529,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Saturation"
-            binding.adjustmentValue.text = "${binding.saturation.progress}"
+            binding.adjustmentValue.text = "${(binding.saturation.progress)-50}"
 
 
         }
@@ -494,7 +548,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Hue"
-            binding.adjustmentValue.text = "${binding.hue.progress}"
+            binding.adjustmentValue.text = "${(binding.hue.progress)-50}"
 
         }
         if (position == 5) {
@@ -512,7 +566,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Exposure"
-            binding.adjustmentValue.text = "${binding.exposure.progress}"
+            binding.adjustmentValue.text = "${(binding.exposure.progress)-50}"
 
         }
         if (position == 6) {
@@ -566,7 +620,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Highlights"
-            binding.adjustmentValue.text = "${binding.highLights.progress}"
+            binding.adjustmentValue.text = "${(binding.highLights.progress)-50}"
 
         }
         if (position == 9) {
@@ -584,7 +638,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Shadow"
-            binding.adjustmentValue.text = "${binding.shadow.progress}"
+            binding.adjustmentValue.text = "${(binding.shadow.progress)-50}"
 
         }
         if (position == 10) {
@@ -601,8 +655,8 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
             binding.temp.visibility = View.VISIBLE
 
-            binding.adjustment.text = "Temprature"
-            binding.adjustmentValue.text = "${binding.temp.progress}"
+            binding.adjustment.text = "Temperature"
+            binding.adjustmentValue.text = "${(binding.temp.progress)-50}"
 
         }
         if (position == 11) {
@@ -645,12 +699,11 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
                 brightness = (seekBar.progress - 100)
 
-                Log.i("BBC", "Brightness ${brightness}")
 
 //                CoroutineScope(IO).launch {
 
 
-                    testing(0)
+                    testing()
 //                    val aadjustedImage = brightness(brightness, adjustedImage!!)
 //                    withContext(Main)
 //                    {
@@ -677,20 +730,14 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 contras = (seekBar.progress / 10).toFloat()
-
-                testing(1)
-
-//                CoroutineScope(IO).launch {
-//
-//                    val aadjustedImage = contras(contras, adjustedImage!!)
-//
-//                    withContext(Main)
-//                    {
-//
-//                        binding.progressBar.visibility = View.GONE
-//                        binding.image.setImageBitmap(aadjustedImage!!)
-//                    }
-//                }
+                if(contras in 5.0f .. 5.9f)
+                {
+                    testing()
+                    contras=-600f
+                }else
+                {
+                    testing()
+                }
 
 
             }
@@ -713,7 +760,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
                 vibrance = (seekBar.progress / 10).toFloat()
 //
-                testing(2)
+                if(vibrance in 5.0f .. 5.9f)
+                {
+                    testing()
+                    vibrance = -600f
+                }else
+                {
+                    testing()
+
+                }
 
             }
         })
@@ -744,7 +799,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(aadjustedImage!!)
 //                    }
 //                }
-                testing(0)
+                if(saturation in 5.0f .. 5.9f)
+                {
+                    testing()
+                    saturation = -600f
+                }else
+                {
+                    testing()
+
+                }
 
             }
         })
@@ -775,7 +838,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(aadjustedImage!!)
 //                    }
 //                }
-                testing(0)
+                if(hue in 5.0f .. 5.9f)
+                {
+                    testing()
+                    hue = -600f
+                }else
+                {
+                    testing()
+
+                }
             }
         })
 
@@ -805,7 +876,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                testing(0)
+                if(exposure in 5.0f .. 5.9f)
+                {
+                    testing()
+                    exposure = -600f
+                }else
+                {
+                    testing()
+
+                }
             }
         })
 
@@ -835,7 +914,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                testing(0)
+                if(sharpen in 5.0f ..5.9f)
+                {
+                    testing()
+                    sharpen = -600f
+                }else
+                {
+                    testing()
+
+                }
             }
         })
 
@@ -866,7 +953,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                testing(0)
+                if(vigentee in 0.0f .. 0.9f)
+                {
+                    testing()
+                    vigentee = -600f
+                }else
+                {
+                    testing()
+
+                }
             }
         })
 
@@ -897,7 +992,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                testing(0)
+                testing()
             }
         })
 
@@ -926,7 +1021,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                testing(0)
+                if(shadow in 5.0f .. 5.9f)
+                {
+                    testing()
+                    shadow = -600f
+                }else
+                {
+                    testing()
+
+                }
             }
         })
 
@@ -956,7 +1059,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                testing(0)
+                if(temp in 5.0f .. 5.9f)
+                {
+                    testing()
+                    temp = -600f
+                }else
+                {
+                    testing()
+
+                }
             }
         })
 
@@ -986,14 +1097,22 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                testing(0)
+                if(blur in 0.0f .. 0.9f)
+                {
+                    testing()
+                    blur = -600f
+                }else
+                {
+                    testing()
+
+                }
             }
         })
 
 
     }
 
-    fun testing(position: Int) {
+    fun testing() {
 
         adjustedImage = bitmap
 //        copiedBitmap = bitmap
@@ -1116,50 +1235,63 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
             if (brightness != 0 ) {
                 brightFilter(brightness)
+
+                Log.i("BBC", "Brightness")
             }
             if (contras != -600.0f) {
                 contrasFilter(contras)
+                Log.i("BBC", "Contrass")
 
             }
             if (vibrance != -600.0f ) {
                 vibranceFilter(vibrance)
+                Log.i("BBC", "Vibrance")
 
             }
             if (saturation != -600.0f ) {
                 saturationFilter(saturation)
+                Log.i("BBC", "Saturation")
 
             }
             if (hue != -600.0f ) {
                 hueFilter(hue)
+                Log.i("BBC", "Hue")
 
             }
 
             if (exposure != -600.0f ) {
                 exposureFilter(exposure)
+                Log.i("BBC", "Exposure")
 
             }
             if (sharpen != -600.0f ) {
                 sharpenFilter(sharpen)
+                Log.i("BBC", "Sharpen")
 
             }
             if (vigentee != -600.0f ) {
                 vigneteeFilter(vigentee)
+                Log.i("BBC", "Vigentee")
 
             }
             if (highLights != 0 ) {
                 highLightsFilter(highLights)
+                Log.i("BBC", "Highlight")
 
             }
             if (shadow != -600.0f ) {
                 shadowFilter(shadow)
+                Log.i("BBC", "Shadow")
 
             }
             if (temp != -600.0f ) {
                 tempFilter(temp)
+                Log.i("BBC", "Temp")
 
             }
             if (blur != -600.0f ) {
                 blurFilter(blur)
+                Log.i("BBC", "Blur")
 
             }
 
@@ -1169,7 +1301,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             withContext(Main)
             {
                 binding.progressBar.visibility=View.GONE
-                binding.image.setImageBitmap(copiedBitmap)
+                binding.image.setImageBitmap(adjustedImage)
 
             }
         }
@@ -1254,14 +1386,20 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             maxImageSize  / realImage.getWidth(),
             maxImageSize  / realImage.getHeight()
         )
-        var width: kotlin.Int = java.lang.Math.round(ratio as kotlin.Float * realImage.getWidth())
-        var height: kotlin.Int = java.lang.Math.round(ratio as kotlin.Float * realImage.getHeight())
+        var width: Int = Math.round(ratio  * realImage.getWidth())
+        var height: Int = Math.round(ratio  * realImage.getHeight())
         var newBitmap: Bitmap? = Bitmap.createScaledBitmap(
             realImage, width,
             height, filter
         )
+        Log.i("BBC", "Width: ${width}")
+        Log.i("BBC", "Height: ${height}")
+
         return newBitmap
     }
+
+
+
 
     override fun onBackPressed() {
         this.finish()

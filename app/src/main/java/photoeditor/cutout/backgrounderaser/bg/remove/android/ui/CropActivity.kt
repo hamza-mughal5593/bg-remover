@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.isseiaoki.simplecropview.CropImageView
 import com.isseiaoki.simplecropview.callback.CropCallback
@@ -31,6 +32,7 @@ class CropActivity : AppCompatActivity(),CropAdapter.clickHandler {
         super.onCreate(savedInstanceState)
         binding = ActivityCropBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        changeStatusBarColor()
         initializeCropList()
         initializeCropRecyclerView()
 
@@ -78,11 +80,15 @@ class CropActivity : AppCompatActivity(),CropAdapter.clickHandler {
     private fun initializeCropRecyclerView ()
     {
         binding.recyclerCrop.layoutManager = LinearLayoutManager(this@CropActivity, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerCrop.adapter = CropAdapter(cropList,this)
+        binding.recyclerCrop.adapter = CropAdapter(this,cropList,this)
     }
 
     override fun onCropClick(mode: CropImageView.CropMode) {
 
         binding.cropImageView.setCropMode(mode)
+    }
+
+    private fun changeStatusBarColor() {
+        window.statusBarColor = ContextCompat.getColor(this, R.color.black)
     }
 }

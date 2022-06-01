@@ -379,7 +379,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/_15sdp"
-                    android:src="@drawable/next" />
+                    android:src="@drawable/ic_done" />
 
             </RelativeLayout>
 

@@ -17,6 +17,13 @@ import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.BottomS
 import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.RemoveBG
 import java.io.ByteArrayInputStream
 import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor
+import androidx.core.app.ActivityCompat.startActivityForResult
+import android.R
+import android.R.attr
+
+import android.R.attr.data
+import android.R.attr.data
+import photoeditor.cutout.backgrounderaser.bg.remove.android.util.saveCaptureImage
 
 
 class MainActivity : AppCompatActivity() {
@@ -87,10 +94,23 @@ class MainActivity : AppCompatActivity() {
         binding.gallery.setOnClickListener {
             openGallery()
         }
+        binding.camera.setOnClickListener {
+
+            openCamera()
+
+        }
+
 
     }
 
-    fun openGallery() {
+    fun openCamera ()
+    {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, 2)
+    }
+
+
+    private fun openGallery() {
 
         val intent = Intent(
             Intent.ACTION_PICK,
@@ -123,6 +143,24 @@ class MainActivity : AppCompatActivity() {
                       }
 
                 }
+            }else if (requestCode == 2 && data !=null)
+            {
+                if(data.extras !=null)
+                {
+                    val image = data.extras!!.get("data")
+                    if(bgRemover)
+                    {
+                        val intent = Intent(this, RemoveBG::class.java)
+                        intent.putExtra("path", saveCaptureImage(this,(image) as Bitmap,"name"))
+                        startActivity(intent)
+                    }else
+                    {
+                        val intent = Intent(this, Editor::class.java)
+                        intent.putExtra("path", saveCaptureImage(this,(image) as Bitmap,"name"))
+                        startActivity(intent)
+                    }
+                }
+
             }
 
         } catch (e: Exception) {

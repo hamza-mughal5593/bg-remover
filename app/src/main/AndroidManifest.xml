@@ -3,6 +3,7 @@
     package="photoeditor.cutout.backgrounderaser.bg.remove.android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"> </uses-permission>
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,8 @@
         android:theme="@style/Theme.BackgroundRemover">
         <activity
             android:name=".ui.CropActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.Editor"
             android:exported="false"
@@ -35,7 +37,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.mydomain.fileprovider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

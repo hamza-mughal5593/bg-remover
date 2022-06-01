@@ -7,23 +7,28 @@
     android:layout_height="match_parent"
     tools:context=".ui.CropActivity">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_editor"
+        />
+
     <com.isseiaoki.simplecropview.CropImageView
         xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cropImageView"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         custom:scv_crop_mode="fit_image"
         custom:scv_handle_size="14dp"
         custom:scv_touch_padding="8dp"
         custom:scv_handle_show_mode="show_always"
+        android:layout_below="@+id/toolbar"
         custom:scv_guide_show_mode="show_always"
         custom:scv_min_frame_size="50dp"
         custom:scv_frame_stroke_weight="1dp"
-        custom:scv_guide_stroke_weight="1dp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        custom:scv_guide_stroke_weight="1dp"
+        android:layout_above="@+id/crop_main_layout"
+        />
 
 
     <ProgressBar
@@ -48,8 +53,9 @@
             android:id="@+id/crop_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp">
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            >
 
             <ImageView
                 android:id="@+id/color_back"
@@ -86,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/crop_layout"
             android:background="#2C2C2C"
-            android:paddingVertical="@dimen/_10sdp" />
+            android:paddingTop="@dimen/_5sdp" />
     </RelativeLayout>
 
 </RelativeLayout>

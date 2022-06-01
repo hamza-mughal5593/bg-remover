@@ -375,7 +375,7 @@ suspend fun blur(context: Context, value: Float, bitmap: Bitmap): Bitmap {
 
     val gpuImage = GPUImage(context)
 
-    if (value in 0f..0.1f) {
+    if (value in 0f..0.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.0f))
     } else if (value in 1f..1.9f) {
         gpuImage.setFilter(GPUImageGaussianBlurFilter(0.1f))
