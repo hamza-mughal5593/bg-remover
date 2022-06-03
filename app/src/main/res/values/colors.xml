@@ -9,7 +9,7 @@
 
     <color name="white">#FFFFFFFF</color>
     <color name="theme_color">#DA4314</color>
-    <color name="transparent">#10000000</color>
+    <color name="transparent">#00000000</color>
 
     <color name="color_1">#E91E63</color>
     <color name="color_2">#9C27B0</color>

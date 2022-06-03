@@ -3,17 +3,28 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/buttons_bg.xml" value="0.2490740740740741" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/dialog_bg.xml" value="0.2490740740740741" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/g1.xml" value="0.2703125" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/ic_done.xml" value="0.25092592592592594" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/ic_privacy_policy.xml" value="0.2490740740740741" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/ic_rate_us.xml" value="0.2490740740740741" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/oval_seekbar_thumb.xml" value="0.1" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/drawable/progress_background.xml" value="0.1" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/activity_crop.xml" value="0.2151268115942029" />
-        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/activity_editor.xml" value="0.176" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/activity_editor.xml" value="0.10526315789473684" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/activity_remove_bg.xml" value="0.17798913043478262" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/bottom_sheet_image_picker.xml" value="0.21920289855072464" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/clipart.xml" value="0.14855072463768115" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/dialog_sure.xml" value="0.176" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/nav_header_main.xml" value="0.136" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/rate_us_dialog.xml" value="0.15942028985507245" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/recycler_bg.xml" value="0.2151268115942029" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/recycler_editor.xml" value="0.2151268115942029" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/toolbar_activity_main.xml" value="0.2115036231884058" />
         <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/layout/toolbar_crop.xml" value="0.21920289855072464" />
+        <entry key="..\:/Bilal/bg_remover_bilals/bg_remover_bilals/app/src/main/res/menu/activity_main_drawer_menu.xml" value="0.17291666666666666" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g1.xml" value="0.234" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g2.xml" value="0.234" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/drawable/g3.xml" value="0.234" />

@@ -5,11 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".ui.CropActivity">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar_editor"
+        layout="@layout/toolbar_crop"
         />
 
     <com.isseiaoki.simplecropview.CropImageView
@@ -53,21 +54,20 @@
             android:id="@+id/crop_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            >
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp">
 
             <ImageView
-                android:id="@+id/color_back"
+                android:id="@+id/crop_back"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_cross"
-                app:tint="#ffffff"
-                />
+                android:src="@drawable/close"
+                app:tint="#ffffff" />
 
 
             <TextView
-                android:id="@+id/bg_type"
+                android:id="@+id/crop_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -81,7 +81,7 @@
                 android:layout_height="@dimen/_20sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:src="@drawable/next" />
+                android:src="@drawable/ic_done" />
 
         </RelativeLayout>
 

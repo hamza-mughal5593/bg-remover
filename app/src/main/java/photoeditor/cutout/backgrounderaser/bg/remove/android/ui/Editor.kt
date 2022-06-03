@@ -3,10 +3,12 @@ package photoeditor.cutout.backgrounderaser.bg.remove.android.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
@@ -14,11 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zomato.photofilters.SampleFilters
-import com.zomato.photofilters.imageprocessors.Filter
-import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter
-import jp.co.cyberagent.android.gpuimage.GPUImage
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -30,20 +27,15 @@ import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.*
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityEditorBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.models.GenerealEditorModel
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.*
-import android.util.Log
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
-import android.provider.MediaStore
-import android.app.ActivityManager
-import android.content.Context
-import android.graphics.ImageDecoder
-import java.lang.Exception
-import kotlin.math.roundToInt
+
+import android.graphics.Canvas
+import photoeditor.cutout.backgrounderaser.bg.remove.android.util.StickerViewImage
+import android.animation.Animator
 
 
 class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.filterHandler,
     BgAdapter.clikHandleBg, StickersAdapter.clickHandler, StickersSubAdapter.clickHandler,
-    AdjustmentsAdapter.clickHandler {
+    AdjustmentsAdapter.clickHandler, OnTouchListener {
 
     private lateinit var binding: ActivityEditorBinding
     private val editorOptions: ArrayList<GenerealEditorModel> = ArrayList()
@@ -68,9 +60,8 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
     var copiedBitmap: Bitmap? = null
 
-    var bitmapHeight=0
-    var bitmapWidth=0
-    var divisor=0
+    var imagePath: String = ""
+    var bgRemover: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,55 +71,110 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         System.loadLibrary("NativeImageProcessor");
         changeStatusBarColor()
         startEditor()
+
+        binding.toolbar.next.setOnClickListener {
+
+               hideStickersHandles()
+               val bitmap = viewToBitmap()
+               savingAnimation()
+               saveImage(this, bitmap)
+
+        }
+
+        binding.toolbar.back.setOnClickListener {
+            backPressDialog(this)
+
+        }
+
+        val iv_image = StickerViewImage(this@Editor)
+        iv_image.setOnTouchListener(this);
+
+    }
+    fun savingAnimation ()
+    {
+        binding.saving.visibility=View.VISIBLE
+        binding.saving.playAnimation()
+        binding.saving.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                Toast.makeText(this@Editor, "Saved Successfully", Toast.LENGTH_SHORT).show()
+                binding.saving.visibility=View.GONE
+
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+            }
+        })
     }
 
-    private fun startEditor ()
-    {
+
+    fun hideStickersHandles() {
+        val clip = ClipArt(this, 0)
+        clip.disableAll(addedStickers)
+    }
+
+    fun viewToBitmap(): Bitmap {
+        val bitmap = Bitmap.createBitmap(
+            binding.bgMain.measuredWidth,
+            binding.bgMain.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(bitmap)
+        binding.bgMain.draw(canvas)
+        return bitmap
+    }
+
+    fun getImagePath() {
+        imagePath = intent.getStringExtra("path").toString()
+        bgRemover = intent.getBooleanExtra("remove_bg", true)
+    }
+
+
+    private fun startEditor() {
         CoroutineScope(IO).launch {
-            val path = intent.getStringExtra("path")
-            bitmap = getBitmapFromUri(this@Editor,Uri.parse(path))
 
-            Log.i("BBC", "Before width---- ${bitmap!!.width}")
-            Log.i("BBC", "Before height----${bitmap!!.height}")
-
-            if(bitmap == null)
-            {
+            getImagePath()
+            bitmap = getBitmapFromUri(this@Editor, Uri.parse(imagePath))
+            if (bitmap == null) {
                 return@launch
             }
-            val ram=checkRAM(this@Editor)
+            val ram = checkRAM(this@Editor)
             bitmap = resizeImage(ram, bitmap!!.width, bitmap!!.height)
-
-            Log.i("BBC", "width---- ${bitmap!!.width}")
-            Log.i("BBC", "height----${bitmap!!.height}")
-
+            if (bgRemover) {
+                bitmap = segmentation(bitmap!!, binding.image)
+            }
             adjustedImage = bitmap
-            copiedBitmap=bitmap
 
             withContext(Main)
             {
-                binding.loading.visibility=View.GONE
+
+                binding.loading.visibility = View.GONE
                 setBitmap()
                 initializeEditorOptionsList()
                 initializeEditorOptionsRecyclerView()
                 handleAdjustments()
                 switchOriginalVsEditedView()
-                firsTime=false
+                firsTime = false
             }
         }
     }
 
-    fun setBitmap ()
-    {
-            binding.image.setImageBitmap(bitmap)
+    private fun setBitmap() {
+        binding.image.setImageBitmap(bitmap)
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun switchOriginalVsEditedView ()
-    {
+    fun switchOriginalVsEditedView() {
         binding.switchView.setOnTouchListener(OnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN ->                 // PRESSED
-                   binding.image.setImageBitmap(bitmap)
+                    binding.image.setImageBitmap(bitmap)
                 MotionEvent.ACTION_UP ->
                     // RELEASED
                     binding.image.setImageBitmap(adjustedImage)
@@ -140,8 +186,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
     override fun onResume() {
 
-        if(!firsTime)
-        {
+        if (!firsTime) {
             setBitmap()
         }
         super.onResume()
@@ -155,7 +200,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
     private fun initializeEditorOptionsList() {
         editorOptions.add(GenerealEditorModel("Filter", R.drawable.ic_effect))
         editorOptions.add(GenerealEditorModel("Stickers", R.drawable.ic_sticker))
-        editorOptions.add(GenerealEditorModel("Text", R.drawable.ic_text))
+        // editorOptions.add(GenerealEditorModel("Text", R.drawable.ic_text))
         editorOptions.add(GenerealEditorModel("Adjustments", R.drawable.ic_adjustment))
         editorOptions.add(GenerealEditorModel("Crop", R.drawable.ic_crop))
         editorOptions.add(GenerealEditorModel("Backgrounds", R.drawable.ic_background))
@@ -193,9 +238,6 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
             binding.image.setImageBitmap(bitmap)
 
-
-
-
         }
 
         binding.filterNext.setOnClickListener {
@@ -211,14 +253,15 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
     override fun onSelectFilter(position: Int) {
         if (bitmap != null) {
-            binding.progressBar.visibility = View.VISIBLE
+            binding.saving.visibility = View.VISIBLE
+            binding.saving.playAnimation()
 
             CoroutineScope(IO).launch {
-                filteredImage = applyFilter(position, bitmap!!,this@Editor)
+                filteredImage = applyFilter(position, bitmap!!, this@Editor)
 
                 withContext(Main)
                 {
-                    binding.progressBar.visibility = View.GONE
+                    binding.saving.visibility = View.GONE
                     binding.filterNext.visibility = View.VISIBLE
                     binding.image.setImageBitmap(filteredImage)
                 }
@@ -283,7 +326,14 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
             binding.bgsMainLayout.visibility = View.VISIBLE
             binding.colorsMainsLayout.visibility = View.GONE
+            binding.bgMain.setBackgroundColor(resources.getColor(R.color.transparent))
+
         }
+        binding.colorNext.setOnClickListener {
+            binding.bgsMainLayout.visibility = View.VISIBLE
+            binding.colorsMainsLayout.visibility = View.GONE
+        }
+
     }
 
     private fun initializeBgRecyclerView(filters: ArrayList<Int>) {
@@ -293,12 +343,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
     }
 
     override fun onClickBg(bg: Int, position: Int) {
-        if (position == 10) {
-            Toast.makeText(this, "Open Gallery", Toast.LENGTH_SHORT).show()
-        } else {
-            binding.bgMain.setBackgroundResource(bg)
-
-        }
+        binding.bgMain.setBackgroundResource(bg)
     }
 
     override fun onCropClick() {
@@ -362,7 +407,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         val ca = ClipArt(this, sticker)
         binding.bgMain.addView(ca)
         ca.id = ++count
-
+        addedStickers.add(ca)
         ca.setOnClickListener {
             disabled = !disabled
             if (disabled) {
@@ -423,34 +468,33 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
     }
 
 
-    private fun removeAdjusmnetsEffects ()
-    {
+    private fun removeAdjusmnetsEffects() {
         brightness = 0
-        contras= -600.0f
+        contras = -600.0f
         vibrance = -600.0f
-        saturation= -600.0f
+        saturation = -600.0f
         hue = -600.0f
         exposure = -600.0f
         sharpen = -600.0f
         vigentee = -600.0f
         highLights = 0
         temp = -600.0f
-        blur= -600.0f
-        shadow= -600.0f
+        blur = -600.0f
+        shadow = -600.0f
 
-        binding.brightness.progress=100
-        binding.contrass.progress=50
-        binding.saturation.progress=50
-        binding.exposure.progress=50
-        binding.hue.progress=50
-        binding.sharpen.progress=0
-        binding.vibrance.progress=50
-        binding.vigentee.progress=0
-        binding.highLights.progress=50
-        binding.temp.progress=50
-        binding.blur.progress=0
+        binding.brightness.progress = 100
+        binding.contrass.progress = 50
+        binding.saturation.progress = 50
+        binding.exposure.progress = 50
+        binding.hue.progress = 50
+        binding.sharpen.progress = 0
+        binding.vibrance.progress = 50
+        binding.vigentee.progress = 0
+        binding.highLights.progress = 50
+        binding.temp.progress = 50
+        binding.blur.progress = 0
 
-        binding.progressBar.visibility=View.GONE
+        binding.progressBar.visibility = View.GONE
 
     }
 
@@ -511,7 +555,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Vibrance"
-            binding.adjustmentValue.text = "${(binding.vibrance.progress)-50}"
+            binding.adjustmentValue.text = "${(binding.vibrance.progress) - 50}"
 
         }
         if (position == 3) {
@@ -529,7 +573,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Saturation"
-            binding.adjustmentValue.text = "${(binding.saturation.progress)-50}"
+            binding.adjustmentValue.text = "${(binding.saturation.progress) - 50}"
 
 
         }
@@ -548,7 +592,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Hue"
-            binding.adjustmentValue.text = "${(binding.hue.progress)-50}"
+            binding.adjustmentValue.text = "${(binding.hue.progress) - 50}"
 
         }
         if (position == 5) {
@@ -566,7 +610,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Exposure"
-            binding.adjustmentValue.text = "${(binding.exposure.progress)-50}"
+            binding.adjustmentValue.text = "${(binding.exposure.progress) - 50}"
 
         }
         if (position == 6) {
@@ -620,7 +664,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Highlights"
-            binding.adjustmentValue.text = "${(binding.highLights.progress)-50}"
+            binding.adjustmentValue.text = "${(binding.highLights.progress) - 50}"
 
         }
         if (position == 9) {
@@ -638,7 +682,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.blur.visibility = View.GONE
 
             binding.adjustment.text = "Shadow"
-            binding.adjustmentValue.text = "${(binding.shadow.progress)-50}"
+            binding.adjustmentValue.text = "${(binding.shadow.progress) - 50}"
 
         }
         if (position == 10) {
@@ -656,7 +700,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             binding.temp.visibility = View.VISIBLE
 
             binding.adjustment.text = "Temperature"
-            binding.adjustmentValue.text = "${(binding.temp.progress)-50}"
+            binding.adjustmentValue.text = "${(binding.temp.progress) - 50}"
 
         }
         if (position == 11) {
@@ -703,7 +747,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                CoroutineScope(IO).launch {
 
 
-                    testing()
+                testing()
 //                    val aadjustedImage = brightness(brightness, adjustedImage!!)
 //                    withContext(Main)
 //                    {
@@ -730,12 +774,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 contras = (seekBar.progress / 10).toFloat()
-                if(contras in 5.0f .. 5.9f)
-                {
+                if (contras in 5.0f..5.9f) {
                     testing()
-                    contras=-600f
-                }else
-                {
+                    contras = -600f
+                } else {
                     testing()
                 }
 
@@ -760,12 +802,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
                 vibrance = (seekBar.progress / 10).toFloat()
 //
-                if(vibrance in 5.0f .. 5.9f)
-                {
+                if (vibrance in 5.0f..5.9f) {
                     testing()
                     vibrance = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -799,12 +839,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(aadjustedImage!!)
 //                    }
 //                }
-                if(saturation in 5.0f .. 5.9f)
-                {
+                if (saturation in 5.0f..5.9f) {
                     testing()
                     saturation = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -838,12 +876,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(aadjustedImage!!)
 //                    }
 //                }
-                if(hue in 5.0f .. 5.9f)
-                {
+                if (hue in 5.0f..5.9f) {
                     testing()
                     hue = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -876,12 +912,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                if(exposure in 5.0f .. 5.9f)
-                {
+                if (exposure in 5.0f..5.9f) {
                     testing()
                     exposure = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -914,12 +948,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                if(sharpen in 5.0f ..5.9f)
-                {
+                if (sharpen in 5.0f..5.9f) {
                     testing()
                     sharpen = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -953,12 +985,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                if(vigentee in 0.0f .. 0.9f)
-                {
+                if (vigentee in 0.0f..0.9f) {
                     testing()
                     vigentee = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -1021,12 +1051,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                if(shadow in 5.0f .. 5.9f)
-                {
+                if (shadow in 5.0f..5.9f) {
                     testing()
                     shadow = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -1059,12 +1087,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                if(temp in 5.0f .. 5.9f)
-                {
+                if (temp in 5.0f..5.9f) {
                     testing()
                     temp = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -1097,12 +1123,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //                        binding.image.setImageBitmap(adjustedImage)
 //                    }
 //                }
-                if(blur in 0.0f .. 0.9f)
-                {
+                if (blur in 0.0f..0.9f) {
                     testing()
                     blur = -600f
-                }else
-                {
+                } else {
                     testing()
 
                 }
@@ -1116,8 +1140,6 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
         adjustedImage = bitmap
 //        copiedBitmap = bitmap
-
-
 
 
         job?.cancel()
@@ -1179,8 +1201,6 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
             /////////// Break Point
 
 
-
-
 //            if (brightness != 0 && position != 0) {
 //                brightFilter(brightness)
 //            }
@@ -1231,9 +1251,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 //            }
 
 
-
-
-            if (brightness != 0 ) {
+            if (brightness != 0) {
                 brightFilter(brightness)
 
                 Log.i("BBC", "Brightness")
@@ -1243,53 +1261,53 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
                 Log.i("BBC", "Contrass")
 
             }
-            if (vibrance != -600.0f ) {
+            if (vibrance != -600.0f) {
                 vibranceFilter(vibrance)
                 Log.i("BBC", "Vibrance")
 
             }
-            if (saturation != -600.0f ) {
+            if (saturation != -600.0f) {
                 saturationFilter(saturation)
                 Log.i("BBC", "Saturation")
 
             }
-            if (hue != -600.0f ) {
+            if (hue != -600.0f) {
                 hueFilter(hue)
                 Log.i("BBC", "Hue")
 
             }
 
-            if (exposure != -600.0f ) {
+            if (exposure != -600.0f) {
                 exposureFilter(exposure)
                 Log.i("BBC", "Exposure")
 
             }
-            if (sharpen != -600.0f ) {
+            if (sharpen != -600.0f) {
                 sharpenFilter(sharpen)
                 Log.i("BBC", "Sharpen")
 
             }
-            if (vigentee != -600.0f ) {
+            if (vigentee != -600.0f) {
                 vigneteeFilter(vigentee)
                 Log.i("BBC", "Vigentee")
 
             }
-            if (highLights != 0 ) {
+            if (highLights != 0) {
                 highLightsFilter(highLights)
                 Log.i("BBC", "Highlight")
 
             }
-            if (shadow != -600.0f ) {
+            if (shadow != -600.0f) {
                 shadowFilter(shadow)
                 Log.i("BBC", "Shadow")
 
             }
-            if (temp != -600.0f ) {
+            if (temp != -600.0f) {
                 tempFilter(temp)
                 Log.i("BBC", "Temp")
 
             }
-            if (blur != -600.0f ) {
+            if (blur != -600.0f) {
                 blurFilter(blur)
                 Log.i("BBC", "Blur")
 
@@ -1300,7 +1318,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
             withContext(Main)
             {
-                binding.progressBar.visibility=View.GONE
+                binding.progressBar.visibility = View.GONE
                 binding.image.setImageBitmap(adjustedImage)
 
             }
@@ -1315,7 +1333,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         copiedBitmap = adjustedImage
     }
 
-    suspend fun  contrasFilter(value: Float) {
+    suspend fun contrasFilter(value: Float) {
         adjustedImage = contras(value, adjustedImage!!)
         copiedBitmap = adjustedImage
     }
@@ -1374,37 +1392,18 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         var bitmap: Bitmap? = null
         var filteredImage: Bitmap? = null
         var adjustedImage: Bitmap? = null
-
-
+        val addedStickers: ArrayList<ClipArt> = ArrayList()
     }
-
-    open fun scaleDown(
-        realImage: Bitmap, maxImageSize: Float,
-        filter: Boolean
-    ): Bitmap? {
-        var ratio: Float = Math.min(
-            maxImageSize  / realImage.getWidth(),
-            maxImageSize  / realImage.getHeight()
-        )
-        var width: Int = Math.round(ratio  * realImage.getWidth())
-        var height: Int = Math.round(ratio  * realImage.getHeight())
-        var newBitmap: Bitmap? = Bitmap.createScaledBitmap(
-            realImage, width,
-            height, filter
-        )
-        Log.i("BBC", "Width: ${width}")
-        Log.i("BBC", "Height: ${height}")
-
-        return newBitmap
-    }
-
-
-
 
     override fun onBackPressed() {
-        this.finish()
-        super.onBackPressed()
+        backPressDialog(this)
     }
+
+    override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+
 }
 
 

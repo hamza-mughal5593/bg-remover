@@ -47,11 +47,21 @@ class CropActivity : AppCompatActivity(),CropAdapter.clickHandler {
                 Editor.bitmap=croppedBitmap
                 withContext(Main)
                 {
-                    binding.progressBar.visibility= View.VISIBLE
+                    binding.progressBar.visibility= View.GONE
                     finish()
                 }
             }
 
+        }
+
+        binding.cropBack.setOnClickListener {
+
+            finish()
+        }
+
+        binding.toolbar.back.setOnClickListener {
+
+            finish()
         }
 
 
@@ -66,15 +76,14 @@ class CropActivity : AppCompatActivity(),CropAdapter.clickHandler {
 
     private fun initializeCropList ()
     {
-        cropList.add(CropModel(CropImageView.CropMode.FREE,R.drawable.model))
-        cropList.add(CropModel(CropImageView.CropMode.FIT_IMAGE,R.drawable.model))
-        cropList.add(CropModel(CropImageView.CropMode.SQUARE,R.drawable.model))
-        cropList.add(CropModel(CropImageView.CropMode.CIRCLE,R.drawable.model))
-        cropList.add(CropModel(CropImageView.CropMode.CIRCLE_SQUARE,R.drawable.model))
-        cropList.add(CropModel(CropImageView.CropMode.RATIO_16_9,R.drawable.model))
-        cropList.add(CropModel(CropImageView.CropMode.RATIO_9_16,R.drawable.model))
-        cropList.add(CropModel(CropImageView.CropMode.RATIO_3_4,R.drawable.model))
-        cropList.add(CropModel(CropImageView.CropMode.RATIO_4_3,R.drawable.model))
+        cropList.add(CropModel(CropImageView.CropMode.FREE,R.drawable.c_free))
+        cropList.add(CropModel(CropImageView.CropMode.FIT_IMAGE,R.drawable.c_free))
+        cropList.add(CropModel(CropImageView.CropMode.SQUARE,R.drawable.c_square))
+       //  cropList.add(CropModel(CropImageView.CropMode.CIRCLE,R.drawable.model))
+        cropList.add(CropModel(CropImageView.CropMode.RATIO_16_9,R.drawable.c_16_9))
+        cropList.add(CropModel(CropImageView.CropMode.RATIO_9_16,R.drawable.c_9_16))
+        cropList.add(CropModel(CropImageView.CropMode.RATIO_3_4,R.drawable.c_3_4))
+        cropList.add(CropModel(CropImageView.CropMode.RATIO_4_3,R.drawable.c_4_3))
     }
 
     private fun initializeCropRecyclerView ()

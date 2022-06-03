@@ -16,7 +16,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
+
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R;
+import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor;
 
 public class ClipArt extends RelativeLayout {
     int baseh;
@@ -51,6 +54,7 @@ public class ClipArt extends RelativeLayout {
     Bitmap shadowBitmap;
     float startDegree;
     String[] v;
+
 
     public ClipArt(Context paramContext,int bitmap) {
         super(paramContext);
@@ -170,7 +174,7 @@ public class ClipArt extends RelativeLayout {
             }
         });
         this.btnrot.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint({ "NewApi" })
+            @SuppressLint({"NewApi", "ClickableViewAccessibility"})
             public boolean onTouch(View paramAnonymousView, MotionEvent event) {
                 if (!ClipArt.this.freeze) {
                     layoutParams = (RelativeLayout.LayoutParams) ClipArt.this.layGroup.getLayoutParams();
@@ -217,6 +221,8 @@ public class ClipArt extends RelativeLayout {
                 }
             }
         });
+
+
     }
     public ClipArt(Context paramContext,String text) {
         super(paramContext);
@@ -390,6 +396,25 @@ public class ClipArt extends RelativeLayout {
         });
     }
 
+    public void hideControls (ArrayList<ClipArt> addedStickers)
+    {
+        for(int i=0;i<addedStickers.size();i++)
+        {
+            RelativeLayout layBg= (RelativeLayout) addedStickers.get(i).getParent();
+            layBg.performClick();
+            layBg.removeView(addedStickers.get(i).layGroup);
+        }
+    }
+
+    public void disableAll(ArrayList<ClipArt> addedStickers) {
+       for(int i=0; i<addedStickers.size();i++)
+       {
+           addedStickers.get(i).btndel.setVisibility(View.INVISIBLE);
+           addedStickers.get(i).btnrot.setVisibility(View.INVISIBLE);
+           addedStickers.get(i).btnscl.setVisibility(View.INVISIBLE);
+           addedStickers.get(i).image.setBackground(null);
+       }
+    }
 
     public void disableAll() {
         this.btndel.setVisibility(View.INVISIBLE);

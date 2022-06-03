@@ -42,11 +42,11 @@ class EditorAdapter(val context: Context, private val options:ArrayList<Genereal
         {
              itemClick.onFilterClick()
         }
-        if(position == 5)
+        if(position == 4)
         {
             itemClick.onBgClick()
         }
-        if(position ==4)
+        if(position ==3)
         {
             itemClick.onCropClick()
         }
@@ -55,7 +55,7 @@ class EditorAdapter(val context: Context, private val options:ArrayList<Genereal
             itemClick.onStickerClick()
 
         }
-        if(position == 3)
+        if(position == 2)
         {
             itemClick.onAdjustmentsClick()
         }
