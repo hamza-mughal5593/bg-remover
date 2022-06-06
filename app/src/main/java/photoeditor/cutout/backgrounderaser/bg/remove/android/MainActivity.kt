@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val image = data.extras!!.get("data")
                     if(bgRemover)
                     {
-                        val intent = Intent(this, RemoveBG::class.java)
+                        val intent = Intent(this, Editor::class.java)
                         intent.putExtra("path", saveCaptureImage(this,(image) as Bitmap,"name"))
                         startActivity(intent)
                     }else

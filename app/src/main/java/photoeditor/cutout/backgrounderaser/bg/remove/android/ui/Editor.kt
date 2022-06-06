@@ -282,7 +282,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         binding.colorBg.setOnClickListener {
 
             val colors = initializeColorsList()
-            initializeBgRecyclerView(colors)
+            initializeBgRecyclerView(colors,"Colors")
 
             binding.bgsMainLayout.visibility = View.GONE
             binding.colorsMainsLayout.visibility = View.VISIBLE
@@ -295,7 +295,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         binding.gradientBg.setOnClickListener {
 
             val gradients = initializeGradientList()
-            initializeBgRecyclerView(gradients)
+            initializeBgRecyclerView(gradients,"Gradients")
 
             binding.bgsMainLayout.visibility = View.GONE
             binding.colorsMainsLayout.visibility = View.VISIBLE
@@ -307,7 +307,7 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
         binding.imagesBg.setOnClickListener {
 
             val images = initializeImagesList()
-            initializeBgRecyclerView(images)
+            initializeBgRecyclerView(images,"Images")
 
             binding.bgsMainLayout.visibility = View.GONE
             binding.colorsMainsLayout.visibility = View.VISIBLE
@@ -336,10 +336,10 @@ class Editor : AppCompatActivity(), EditorAdapter.clickHandler, FiltersAdapter.f
 
     }
 
-    private fun initializeBgRecyclerView(filters: ArrayList<Int>) {
+    private fun initializeBgRecyclerView(filters: ArrayList<Int>,type:String) {
         binding.recyclerColors.layoutManager =
             LinearLayoutManager(this@Editor, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerColors.adapter = BgAdapter(this@Editor, filters, this)
+        binding.recyclerColors.adapter = BgAdapter(this@Editor, filters,type, this)
     }
 
     override fun onClickBg(bg: Int, position: Int) {

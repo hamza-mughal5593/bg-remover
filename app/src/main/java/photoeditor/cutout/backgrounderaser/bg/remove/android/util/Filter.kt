@@ -2,13 +2,10 @@ package photoeditor.cutout.backgrounderaser.bg.remove.android.ui
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Point
-import android.util.Log
 import com.zomato.photofilters.SampleFilters
 import com.zomato.photofilters.imageprocessors.Filter
 import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter
 import com.zomato.photofilters.imageprocessors.subfilters.ToneCurveSubFilter
-import com.zomato.photofilters.imageprocessors.subfilters.VignetteSubFilter
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.filter.*
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
@@ -19,21 +16,21 @@ fun initializeFiltersList(): ArrayList<GenerealEditorModel> {
 
     val filters: ArrayList<GenerealEditorModel> = ArrayList()
 
-    filters.add(GenerealEditorModel("0", R.drawable.ic_effect))
-    filters.add(GenerealEditorModel("1", R.drawable.ic_sticker))
-    filters.add(GenerealEditorModel("2", R.drawable.ic_text))
-    filters.add(GenerealEditorModel("3", R.drawable.ic_adjustment))
-    filters.add(GenerealEditorModel("4", R.drawable.ic_crop))
-    filters.add(GenerealEditorModel("5", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("6", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("7", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("8", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("9", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("10", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("11", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("12", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("13", R.drawable.ic_background))
-    filters.add(GenerealEditorModel("14", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Night", R.drawable.ic_effect))
+    filters.add(GenerealEditorModel("Blue", R.drawable.ic_sticker))
+    filters.add(GenerealEditorModel("Struck", R.drawable.ic_text))
+    filters.add(GenerealEditorModel("Lime", R.drawable.ic_adjustment))
+    filters.add(GenerealEditorModel("Star", R.drawable.ic_crop))
+    filters.add(GenerealEditorModel("Bright", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Vibrancy", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Shine", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Purple", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Dark", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Grey", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Old", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Honk", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Charm", R.drawable.ic_background))
+    filters.add(GenerealEditorModel("Fresh", R.drawable.ic_background))
 
     return filters
 }

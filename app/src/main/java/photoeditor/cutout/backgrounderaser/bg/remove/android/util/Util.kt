@@ -87,12 +87,25 @@ fun getBitmapFromUris(context: Context, selectedPhotoUrii: Uri): Bitmap? {
 }
 
 fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
-    val parcelFileDescriptor: ParcelFileDescriptor? =
-        context.contentResolver.openFileDescriptor(uri, "r")
-    val fileDescriptor: FileDescriptor = parcelFileDescriptor!!.fileDescriptor
-    val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-    parcelFileDescriptor.close()
-    return image
+
+    try
+    {
+        val sharedFileUri=FileProvider.getUriForFile(context, "${context.packageName}.provider", File(uri.path))
+        val parcelFileDescriptor: ParcelFileDescriptor? = context.contentResolver.openFileDescriptor(sharedFileUri, "r")
+        val fileDescriptor: FileDescriptor = parcelFileDescriptor!!.fileDescriptor
+        val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+        parcelFileDescriptor.close()
+        return image
+    }catch (e:Exception)
+    {
+        val parcelFileDescriptor: ParcelFileDescriptor? = context.contentResolver.openFileDescriptor(uri, "r")
+        val fileDescriptor: FileDescriptor = parcelFileDescriptor!!.fileDescriptor
+        val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+        parcelFileDescriptor.close()
+        return image
+    }
+
+
 }
 
 
@@ -115,7 +128,8 @@ fun saveCaptureImage(context: Context, bitmapImage: Bitmap, name: String): Strin
             e.printStackTrace()
         }
     }
-    return directory.canonicalPath
+    Log.i("BBC", "saveCaptureImage: ${mypath.absolutePath}")
+    return mypath.absolutePath
 }
 
 
