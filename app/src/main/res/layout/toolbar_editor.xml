@@ -29,7 +29,8 @@
                android:text="Edit"
                android:textColor="#ffffff"
                android:layout_centerInParent="true"
-               android:textSize="@dimen/_15sdp"
+               android:textSize="@dimen/_16sdp"
+               android:textStyle="bold"
                />
 
            <ImageView

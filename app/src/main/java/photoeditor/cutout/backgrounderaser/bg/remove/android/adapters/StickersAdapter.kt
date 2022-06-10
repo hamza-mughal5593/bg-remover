@@ -34,10 +34,10 @@ class StickersAdapter(private val stickerTypes:ArrayList<Int>,val itemClick:clic
 
         if(row_index == position)
         {
-            holder.binding.bg.setBackgroundResource(R.color.theme_color)
+            holder.binding.bg.setBackgroundResource(R.drawable.bg)
         }else
         {
-            holder.binding.bg.setBackgroundResource(R.color.white)
+            holder.binding.bg.background = null
 
         }
 

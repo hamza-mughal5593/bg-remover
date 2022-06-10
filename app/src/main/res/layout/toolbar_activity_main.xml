@@ -22,22 +22,23 @@
             android:id="@+id/app_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical"
             android:text="Background Remover"
+            android:layout_centerHorizontal="true"
             android:textColor="#FFFFFF"
+
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
 
 
         <ImageView
             android:id="@+id/premium"
-            android:layout_width="24dp"
+            android:layout_width="48dp"
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="15dp"
-            android:src="@drawable/crown" />
+            android:src="@drawable/pro" />
 
     </RelativeLayout>
 

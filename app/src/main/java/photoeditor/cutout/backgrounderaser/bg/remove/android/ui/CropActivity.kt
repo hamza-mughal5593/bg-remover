@@ -1,15 +1,11 @@
 package photoeditor.cutout.backgrounderaser.bg.remove.android.ui
 
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.isseiaoki.simplecropview.CropImageView
-import com.isseiaoki.simplecropview.callback.CropCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -19,8 +15,6 @@ import photoeditor.cutout.backgrounderaser.bg.remove.android.R
 import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.CropAdapter
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityCropBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.models.CropModel
-import photoeditor.cutout.backgrounderaser.bg.remove.android.util.saveToInternalStorage
-import java.io.File
 
 
 class CropActivity : AppCompatActivity(),CropAdapter.clickHandler {

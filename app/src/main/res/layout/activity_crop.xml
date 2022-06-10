@@ -46,9 +46,8 @@
         android:id="@+id/crop_main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2C2C2C"
         android:layout_alignParentBottom="true"
-        >
+        android:background="#1b1b1e">
 
         <RelativeLayout
             android:id="@+id/crop_layout"
@@ -73,7 +72,7 @@
                 android:layout_centerInParent="true"
                 android:text="Crop"
                 android:textColor="#ffffff"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_13sdp" />
 
             <ImageView
                 android:id="@+id/crop"
@@ -91,8 +90,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/crop_layout"
-            android:background="#2C2C2C"
-            android:paddingTop="@dimen/_5sdp" />
+            android:background="#1b1b1e"
+            android:layout_marginVertical="@dimen/_20sdp"
+            />
     </RelativeLayout>
 
 </RelativeLayout>

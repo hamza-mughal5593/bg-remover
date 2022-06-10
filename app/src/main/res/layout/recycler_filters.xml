@@ -1,46 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_60sdp"
+    android:layout_width="@dimen/_50sdp"
     android:layout_height="@dimen/_70sdp"
-    android:layout_marginHorizontal="@dimen/_10sdp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    android:layout_marginHorizontal="@dimen/_10sdp">
 
     <RelativeLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bright_b" />
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        app:tint="#ffffff"
-        android:layout_margin="@dimen/_2sdp"
-        />
+        <RelativeLayout
+            android:id="@+id/name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentBottom="true"
+            android:background="#000000">
 
-    <RelativeLayout
-        android:id="@+id/name_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_20sdp"
-        android:layout_alignParentBottom="true"
-        android:background="#000000"
-        >
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Adjustments"
-            android:textColor="#ffffff"
-            android:textSize="@dimen/_7sdp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Adjustments"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/_7sdp"
+                android:textStyle="bold" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

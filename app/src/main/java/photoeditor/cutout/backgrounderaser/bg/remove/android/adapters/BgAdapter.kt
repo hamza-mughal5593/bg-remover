@@ -37,11 +37,11 @@ class BgAdapter(
             notifyDataSetChanged()
         }
         if (rowIndex == position) {
-            holder.binding.bgBg.setBackgroundResource(R.color.theme_color)
+            holder.binding.bgBg.setBackgroundResource(R.drawable.bg)
 
         } else {
-            holder.binding.bgBg.setBackgroundResource(R.color.white)
 
+            holder.binding.bgBg.background = null
         }
 
     }

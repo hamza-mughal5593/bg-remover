@@ -9,9 +9,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar_editor"
-        />
-
+        layout="@layout/toolbar_editor" />
 
 
     <RelativeLayout
@@ -19,35 +17,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/options_layout"
-        android:background="#00000000"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:background="#00000000">
 
 
         <photoeditor.cutout.backgrounderaser.bg.remove.android.util.StickerViewImage
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="matrix"
-            />
+            android:scaleType="matrix" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/switchView"
             android:layout_width="@dimen/_24sdp"
             android:layout_height="@dimen/_24sdp"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/close"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/_15sdp"
-            android:visibility="gone"
-            />
+            android:src="@drawable/close"
+            android:visibility="gone" />
 
 
     </RelativeLayout>
@@ -57,21 +52,18 @@
         android:id="@+id/loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:lottie_rawRes="@raw/loading"
-        app:lottie_autoPlay="true"
         android:layout_centerInParent="true"
-        app:lottie_loop="true"/>
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/saving"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        app:lottie_rawRes="@raw/loading"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        />
-
-
+        app:lottie_rawRes="@raw/loading" />
 
 
     <RelativeLayout
@@ -84,22 +76,22 @@
             android:id="@+id/recycler_editing_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2C2C2C"
-            android:paddingVertical="@dimen/_10sdp" />
+            android:background="#1b1b1e"
+            android:paddingVertical="@dimen/_20sdp" />
 
         <RelativeLayout
             android:id="@+id/filters_main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2C2C2C"
+            android:background="#1b1b1e"
             android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/filter_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
 
                 >
@@ -117,7 +109,7 @@
                     android:layout_centerInParent="true"
                     android:text="Filter"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
                 <ImageView
                     android:id="@+id/filter_next"
@@ -126,8 +118,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:src="@drawable/ic_done"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -137,25 +128,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filter_main_layout"
-                android:background="#2C2C2C"
-                android:paddingVertical="@dimen/_10sdp" />
+                android:background="#1b1b1e"
+                android:paddingVertical="@dimen/_15sdp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/bgs_main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2C2C2C"
-            android:visibility="gone"
-            >
+            android:background="#1b1b1e"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/bg_main_layout"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_height="wrap_content">
+                android:layout_marginBottom="@dimen/_10sdp">
 
 
                 <ImageView
@@ -172,7 +162,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="Backgrounds"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -200,9 +190,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="Colors"
                             android:textColor="#ffffff"
-                            android:textSize="@dimen/_15sdp" />
+                            android:textSize="@dimen/_12sdp" />
 
                     </LinearLayout>
 
@@ -223,9 +214,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="Gradients"
                             android:textColor="#ffffff"
-                            android:textSize="@dimen/_15sdp" />
+                            android:textSize="@dimen/_12sdp" />
 
                     </LinearLayout>
 
@@ -246,9 +238,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="Images"
                             android:textColor="#ffffff"
-                            android:textSize="@dimen/_15sdp" />
+                            android:textSize="@dimen/_12sdp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -259,10 +252,9 @@
             android:id="@+id/colors_mains_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2C2C2C"
             android:layout_marginTop="@dimen/_10sdp"
-            android:visibility="gone"
-            >
+            android:background="#1b1b1e"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/colors_main_layout"
@@ -288,7 +280,7 @@
                     android:layout_centerInParent="true"
                     android:text="Colors"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
 
                 <ImageView
@@ -297,8 +289,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/_15sdp"
-                    android:src="@drawable/ic_done"
-                    />
+                    android:src="@drawable/ic_done" />
 
             </RelativeLayout>
 
@@ -308,17 +299,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/colors_main_layout"
-                android:background="#2C2C2C"
-                android:paddingVertical="@dimen/_10sdp" />
+                android:background="#1b1b1e"
+                android:layout_marginVertical="@dimen/_10sdp"
+
+                />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/stickers_mains_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2C2C2C"
-            android:visibility="gone"
-            >
+            android:background="#1b1b1e"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/stickers_main_layout"
@@ -342,7 +334,7 @@
                     android:layout_centerInParent="true"
                     android:text="Stickers"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
             </RelativeLayout>
 
@@ -353,7 +345,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/stickers_main_layout"
                 android:layout_centerHorizontal="true"
-                android:background="#2C2C2C" />
+                android:background="#1b1b1e" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_stickers_sub"
@@ -361,24 +353,23 @@
                 android:layout_height="@dimen/_100sdp"
                 android:layout_below="@+id/recycler_stickers_main"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="#2C2C2C" />
+                android:background="#1b1b1e" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/adjustments_mains_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2C2C2C"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:visibility="gone"
-            >
+            android:background="#1b1b1e"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/adjustments_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp">
 
                 <ImageView
@@ -395,7 +386,7 @@
                     android:layout_centerInParent="true"
                     android:text="Adjustments"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
                 <ImageView
                     android:id="@+id/adjustments_next"
@@ -418,7 +409,7 @@
                     android:id="@+id/adjustment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
                     android:text="Brightness"
                     android:textColor="#ffffff" />
 
@@ -430,6 +421,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_toEndOf="@+id/adjustment"
                     android:text="0"
+                    android:textSize="@dimen/_12sdp"
                     android:textColor="#ffffff" />
 
 
@@ -486,8 +478,7 @@
                     android:splitTrack="false"
                     android:thumb="@drawable/oval_seekbar_thumb"
                     android:thumbOffset="10dp"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
                 <SeekBar
                     android:id="@+id/exposure"
@@ -504,8 +495,7 @@
                     android:splitTrack="false"
                     android:thumb="@drawable/oval_seekbar_thumb"
                     android:thumbOffset="10dp"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
                 <SeekBar
                     android:id="@+id/hue"
@@ -598,8 +588,7 @@
                     android:splitTrack="false"
                     android:thumb="@drawable/oval_seekbar_thumb"
                     android:thumbOffset="10dp"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
                 <SeekBar
                     android:id="@+id/highLights"
@@ -666,8 +655,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/adjustment_layout"
-                android:background="#2C2C2C"
-                android:paddingVertical="@dimen/_10sdp" />
+                android:background="#1b1b1e"
+                android:paddingVertical="@dimen/_20sdp" />
         </RelativeLayout>
 
 

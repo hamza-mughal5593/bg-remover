@@ -12,7 +12,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#000000"
     tools:context=".MainActivity">
 
     <include
@@ -28,10 +28,22 @@
         android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <ImageView
-            android:id="@+id/img"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_10sdp"
+            app:cardCornerRadius="8dp">
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_pic" />
+
+        </androidx.cardview.widget.CardView>
 
 
 
@@ -42,7 +54,7 @@
         android:id="@+id/premium_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:background="@drawable/gradient_bg"
         android:orientation="horizontal"
@@ -66,11 +78,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:text="Subscribe Premium"
-                android:textSize="@dimen/_17sdp"
+                android:textSize="@dimen/_20sdp"
+                android:textAlignment="center"
                 android:textColor="#ffffff"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:textStyle="bold" />
@@ -82,9 +93,9 @@
         android:id="@+id/selection_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -92,7 +103,7 @@
 
             android:id="@+id/cv_bg_remover"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_150sdp"
+            android:layout_height="@dimen/_130sdp"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
@@ -107,10 +118,10 @@
 
                 <ImageView
                     android:id="@+id/bg_img"
-                    android:layout_width="@dimen/_48sdp"
-                    android:layout_height="@dimen/_48sdp"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:layout_weight="1"
                     android:src="@drawable/remove_bg" />
 
@@ -118,14 +129,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/bg_img"
+                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="BG Remover"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/_17sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -137,7 +146,7 @@
 
             android:id="@+id/cv_editor"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_150sdp"
+            android:layout_height="@dimen/_130sdp"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
@@ -152,10 +161,10 @@
 
                 <ImageView
                     android:id="@+id/editor_img"
-                    android:layout_width="@dimen/_48sdp"
-                    android:layout_height="@dimen/_48sdp"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:layout_weight="1"
                     android:src="@drawable/photo_edit" />
 
@@ -163,14 +172,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/editor_img"
+                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="Photo Editor"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/_17sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -191,6 +198,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
+            android:id="@+id/msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -227,7 +235,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="Select an Image"
+                    android:text="Select an image"
+                    android:textColor="#ffffff"
                     android:textSize="@dimen/_17sdp"
                     android:textStyle="bold" />
 
@@ -235,7 +244,8 @@
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
                     android:layout_weight="1"
-                    android:src="@drawable/crown" />
+                    android:src="@drawable/ic_add"
+                    app:tint="#ffffff"/>
 
 
 

@@ -11,7 +11,7 @@ import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.Recycle
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.RecyclerEditorBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.models.CropModel
 
-class CropAdapter(val context: Context,val list:ArrayList<CropModel>,val itemClick: clickHandler) : RecyclerView.Adapter<CropAdapter.ViewHolder>() {
+class CropAdapter(val context: Context, private val list:ArrayList<CropModel>, private val itemClick: clickHandler) : RecyclerView.Adapter<CropAdapter.ViewHolder>() {
 
 
      var row_index=-1

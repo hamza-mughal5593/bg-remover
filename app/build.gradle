@@ -81,5 +81,6 @@ dependencies {
     //Rating bar
     implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
     implementation 'com.squareup.picasso:picasso:2.8'
+    implementation "androidx.cardview:cardview:1.0.0"
 
 }

@@ -1,14 +1,18 @@
 package photoeditor.cutout.backgrounderaser.bg.remove.android
 
+import android.Manifest
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,6 +27,11 @@ import photoeditor.cutout.backgrounderaser.bg.remove.android.util.openPrivacyPol
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.rate_dialog
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.saveCaptureImage
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.shareApp
+import androidx.core.app.ActivityCompat
+import android.content.DialogInterface
+
+import android.widget.Toast
+
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -31,7 +40,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var backPress: Boolean = false
     var bgRemover=true
     var actionBarDrawerToggle: ActionBarDrawerToggle? = null
+    private val PERMISSION_REQUEST_CODE = 200
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,29 +75,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun handleMainSelection() {
         binding.cvBgRemover.setOnClickListener {
 
-            showImagePickerLayout()
+            val message= "Start removing background from your images with our magic tool"
+            showImagePickerLayout(message)
             backPress = true
             bgRemover=true
         }
         binding.cvEditor.setOnClickListener {
 
-            showImagePickerLayout()
+            var message="Start Photo Editing with our editor"
+            showImagePickerLayout(message)
             backPress = true
             bgRemover=false
 
         }
     }
 
-    fun showImagePickerLayout() {
+    private fun showImagePickerLayout(message:String) {
+
+        binding.msg.text=message
         binding.selectionLayout.visibility = View.GONE
+        binding.premiumLayout.visibility=View.GONE
         binding.selectImageLayout.visibility = View.VISIBLE
     }
 
-    fun showMainSelectionLayout() {
+    private fun showMainSelectionLayout() {
         binding.selectionLayout.visibility = View.VISIBLE
+        binding.premiumLayout.visibility=View.VISIBLE
         binding.selectImageLayout.visibility = View.GONE
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun handleOnClickSelectImage() {
         binding.selectImage.setOnClickListener {
 
@@ -107,11 +125,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         binding.camera.setOnClickListener {
 
-            openCamera()
+
+            if (checkPermission())
+            {
+                openCamera()
+
+            }else
+            {
+                requestPermission()
+            }
 
         }
 
 
+    }
+
+    private fun checkPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this, arrayOf(Manifest.permission.CAMERA),
+            PERMISSION_REQUEST_CODE
+        )
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == PERMISSION_REQUEST_CODE)
+        {
+            if(grantResults.size >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                openCamera()
+            }else
+            {
+                Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     fun openCamera ()
@@ -123,10 +179,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun openGallery() {
 
-        val intent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        )
+        val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
