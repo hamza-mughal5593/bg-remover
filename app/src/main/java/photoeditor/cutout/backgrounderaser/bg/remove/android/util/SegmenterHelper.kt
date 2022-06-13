@@ -18,7 +18,7 @@ import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-fun segmentation(originalImage: Bitmap,img: ImageView): Bitmap? {
+fun segmentation(originalImage: Bitmap, img: ImageView): Bitmap? {
 
     lateinit var mask: ByteBuffer
     var maskWidth: Int = 0
@@ -26,7 +26,8 @@ fun segmentation(originalImage: Bitmap,img: ImageView): Bitmap? {
     var removeBGBitmap: Bitmap? = null
 
     val options =
-        SelfieSegmenterOptions.Builder().setDetectorMode(SelfieSegmenterOptions.SINGLE_IMAGE_MODE).enableRawSizeMask().build()
+        SelfieSegmenterOptions.Builder().setDetectorMode(SelfieSegmenterOptions.SINGLE_IMAGE_MODE)
+            .enableRawSizeMask().build()
     val segmenter = Segmentation.getClient(options)
     var image: InputImage? = null
     try {
@@ -37,21 +38,24 @@ fun segmentation(originalImage: Bitmap,img: ImageView): Bitmap? {
         Log.i("BBC", "segmentation: Error idr ")
     }
 
-         segmenter.process(image!!)
-             .addOnSuccessListener { segmentationMask ->
-                 // Store all information so we can reuse it if e.g. a background images is chosen
-                 mask = segmentationMask.buffer
-                 maskWidth = segmentationMask.width
-                 maskHeight = segmentationMask.height
-                 val maskedBitmap = convertByteBufferToBitmap(mask, maskWidth, maskHeight)
-                 removeBGBitmap = maskToBitmap(originalImage, maskedBitmap.scale(originalImage.width, originalImage.height, true))
-                 img.setImageBitmap(removeBGBitmap)
-                 Editor.bitmap=removeBGBitmap
-             }
-             .addOnFailureListener { e ->
-                 println("Image processing failed: $e")
-             }
-          return removeBGBitmap
+    segmenter.process(image!!)
+        .addOnSuccessListener { segmentationMask ->
+            // Store all information so we can reuse it if e.g. a background images is chosen
+            mask = segmentationMask.buffer
+            maskWidth = segmentationMask.width
+            maskHeight = segmentationMask.height
+            val maskedBitmap = convertByteBufferToBitmap(mask, maskWidth, maskHeight)
+            removeBGBitmap = maskToBitmap(
+                originalImage,
+                maskedBitmap.scale(originalImage.width, originalImage.height, true)
+            )
+            img.setImageBitmap(removeBGBitmap)
+            Editor.bitmap = removeBGBitmap
+        }
+        .addOnFailureListener { e ->
+            println("Image processing failed: $e")
+        }
+    return removeBGBitmap
 }
 
 private fun convertByteBufferToBitmap(
@@ -66,7 +70,8 @@ private fun convertByteBufferToBitmap(
 
     for (i in 0 until imgSizeX * imgSizeY) {
         val a = byteBuffer.float
-        pixels[i] = Color.argb((255 * a).toInt(), 0, 0, 0)
+        if (a > 0.3)
+            pixels[i] = Color.argb((255 * a).toInt(), 0, 0, 0)
     }
     bitmap.setPixels(pixels, 0, imgSizeX, 0, 0, imgSizeX, imgSizeY)
     return bitmap

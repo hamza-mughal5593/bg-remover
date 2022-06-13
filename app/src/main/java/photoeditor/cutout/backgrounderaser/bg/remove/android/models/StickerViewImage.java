@@ -1,4 +1,4 @@
-package photoeditor.cutout.backgrounderaser.bg.remove.android.util;
+package photoeditor.cutout.backgrounderaser.bg.remove.android.models;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,9 +12,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
 @SuppressLint("AppCompatCustomView")
-public class StickerViewImage extends ImageView implements View.OnTouchListener {
+public class StickerViewImage   extends ImageView implements View.OnTouchListener {
 
     // these matrices will be used to move and zoom image
     private Matrix matrix = new Matrix();

@@ -1,10 +1,12 @@
 package photoeditor.cutout.backgrounderaser.bg.remove.android
 
 import android.Manifest
-import photoeditor.cutout.backgrounderaser.bg.remove.android.R
+import android.R.attr.bitmap
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.ExifInterface
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,26 +14,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityMainBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.BottomSheetImagePickerBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor
-import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.RemoveBG
-import photoeditor.cutout.backgrounderaser.bg.remove.android.util.openPrivacyPolicy
-import photoeditor.cutout.backgrounderaser.bg.remove.android.util.rate_dialog
+import photoeditor.cutout.backgrounderaser.bg.remove.android.util.getBitmapFromUri
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.saveCaptureImage
-import photoeditor.cutout.backgrounderaser.bg.remove.android.util.shareApp
-import androidx.core.app.ActivityCompat
-import android.content.DialogInterface
-
-import android.widget.Toast
-
+import java.io.File
+import java.io.IOException
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -75,32 +74,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun handleMainSelection() {
         binding.cvBgRemover.setOnClickListener {
 
-            val message= "Start removing background from your images with our magic tool"
-            showImagePickerLayout(message)
+//            val message= "Start removing background from your images with our magic tool"
+//            showImagePickerLayout(message)
+
+            if (checkPermission())
+            {
+                openCamera()
+
+            }else
+            {
+                requestPermission()
+            }
+
+
             backPress = true
             bgRemover=true
         }
-        binding.cvEditor.setOnClickListener {
 
-            var message="Start Photo Editing with our editor"
-            showImagePickerLayout(message)
-            backPress = true
-            bgRemover=false
-
-        }
     }
 
-    private fun showImagePickerLayout(message:String) {
-
-        binding.msg.text=message
-        binding.selectionLayout.visibility = View.GONE
-        binding.premiumLayout.visibility=View.GONE
-        binding.selectImageLayout.visibility = View.VISIBLE
-    }
 
     private fun showMainSelectionLayout() {
         binding.selectionLayout.visibility = View.VISIBLE
-        binding.premiumLayout.visibility=View.VISIBLE
         binding.selectImageLayout.visibility = View.GONE
     }
 
@@ -172,10 +167,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun openCamera ()
     {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, 2)
-    }
+//        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        cameraIntent.action = MediaStore.EXTRA_OUTPUT
+//        startActivityForResult(cameraIntent, 2)
 
+
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val outputDir: File = getCacheDir()
+        var file: File? = null
+        try {
+            file = File.createTempFile("img", "jpg", outputDir)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        if (file != null) {
+
+            mImageUri = FileProvider.getUriForFile(this, "${this.packageName}.provider", file)
+            //mImageUri = File.toString();    //If I use String instead of an Uri, it works better (ie, can accept camera photo)
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri)
+            startActivityForResult(cameraIntent, 2)
+        }
+
+
+    }
+var mImageUri:Uri? = null
 
     private fun openGallery() {
 
@@ -208,11 +223,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     startActivity(intent)
 
                 }
-            }else if (requestCode == 2 && data !=null)
+            }else if (requestCode == 2)
             {
-                if(data.extras !=null)
-                {
-                    val image = data.extras!!.get("data")
+//                if(data.extras !=null)
+//                {
+//                    val image = data.extras!!.get("data")
+    val image = getBitmapFromUri(this,mImageUri!!)
+
+
+
                     if(bgRemover)
                     {
                         val intent = Intent(this, Editor::class.java)
@@ -224,7 +243,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         intent.putExtra("path", saveCaptureImage(this,(image) as Bitmap,"name"))
                         startActivity(intent)
                     }
-                }
+//                }
 
             }
 
@@ -250,13 +269,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.drawerLayout.close()
 
         if (item.itemId == R.id.nav_share) {
-            shareApp(this)
+//            shareApp(this)
         } else if (item.itemId == R.id.nav_privacy) {
-            openPrivacyPolicy(this)
+//            openPrivacyPolicy(this)
         }
         else if(item.itemId == R.id.nav_rate)
         {
-            rate_dialog(this)
+//            rate_dialog(this)
         }else if (item.itemId ==R.id.nav_remove_ads)
         {
 //            if(getfromSharedPrefs())

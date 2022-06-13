@@ -2,43 +2,34 @@ package photoeditor.cutout.backgrounderaser.bg.remove.android.util
 
 import android.app.Activity
 import android.app.ActivityManager
-import android.app.Dialog
 import android.content.*
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
-import androidx.core.content.FileProvider.getUriForFile
-import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor
-import kotlin.math.roundToInt
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
-import android.os.Environment
-
+import android.net.Uri
 import android.os.ParcelFileDescriptor
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AlertDialog
-import com.airbnb.lottie.BuildConfig
-import com.willy.ratingbar.ScaleRatingBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.exifinterface.media.ExifInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import photoeditor.cutout.backgrounderaser.bg.remove.android.MainActivity
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
+import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor
 import java.io.*
-import java.io.File.separator
 import java.util.*
+import kotlin.math.roundToInt
 
 
 fun checkRAM(context: Context): Int {
@@ -55,7 +46,7 @@ fun resizeImage(available: Int, bitmapWidth: Int, bitmapHeight: Int): Bitmap {
     val maxValue = if (available == 1) {
         1000
     } else {
-        1000 + (250 * available)
+        500 + (250 * available)
     }
 
     return if (bitmapHeight > maxValue || bitmapWidth > maxValue) {
@@ -75,6 +66,84 @@ fun resizeImage(available: Int, bitmapWidth: Int, bitmapHeight: Int): Bitmap {
     }
 }
 
+@Nullable
+@Throws(IOException::class)
+fun getBitmapFromContentUri(contentResolver: ContentResolver?, imageUri: Uri?): Bitmap? {
+    var decodedBitmap: Bitmap? = null
+    try {
+        decodedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+    } catch (e: java.lang.Exception) {
+        Log.e("TAG", "getBitmapFromContentUri: " + e.localizedMessage)
+    }
+    if (decodedBitmap == null) {
+        return null
+    }
+    val orientation: Int = getExifOrientationTag(contentResolver!!, imageUri!!)
+    var rotationDegrees = 0
+    var flipX = false
+    var flipY = false
+    when (orientation) {
+        ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> flipX = true
+        ExifInterface.ORIENTATION_ROTATE_90 -> rotationDegrees = 90
+        ExifInterface.ORIENTATION_TRANSPOSE -> {
+            rotationDegrees = 90
+            flipX = true
+        }
+        ExifInterface.ORIENTATION_ROTATE_180 -> rotationDegrees = 180
+        ExifInterface.ORIENTATION_FLIP_VERTICAL -> flipY = true
+        ExifInterface.ORIENTATION_ROTATE_270 -> rotationDegrees = -90
+        ExifInterface.ORIENTATION_TRANSVERSE -> {
+            rotationDegrees = -90
+            flipX = true
+        }
+        ExifInterface.ORIENTATION_UNDEFINED, ExifInterface.ORIENTATION_NORMAL -> {
+        }
+        else -> {
+        }
+    }
+    return rotateBitmap(decodedBitmap, rotationDegrees, flipX, flipY)
+}
+private fun getExifOrientationTag(resolver: ContentResolver, imageUri: Uri): Int {
+    // We only support parsing EXIF orientation tag from local file on the device.
+    // See also:
+    // https://android-developers.googleblog.com/2016/12/introducing-the-exifinterface-support-library.html
+    if (ContentResolver.SCHEME_CONTENT != imageUri.scheme
+        && ContentResolver.SCHEME_FILE != imageUri.scheme
+    ) {
+        return 0
+    }
+    var exif: ExifInterface
+    try {
+        resolver.openInputStream(imageUri).use { inputStream ->
+            if (inputStream == null) {
+                return 0
+            }
+            exif = ExifInterface(inputStream)
+        }
+    } catch (e: IOException) {
+        Log.e("TAG", "failed to open file to read rotation meta data: $imageUri", e)
+        return 0
+    }
+    return exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+}
+private fun rotateBitmap(
+    bitmap: Bitmap, rotationDegrees: Int, flipX: Boolean, flipY: Boolean
+): Bitmap? {
+    val matrix = Matrix()
+
+    // Rotate the image back to straight.
+    matrix.postRotate(rotationDegrees.toFloat())
+
+    // Mirror the image along the X or Y axis.
+    matrix.postScale(if (flipX) -1.0f else 1.0f, if (flipY) -1.0f else 1.0f)
+    val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
+    // Recycle the old bitmap if it has changed.
+    if (rotatedBitmap != bitmap) {
+        bitmap.recycle()
+    }
+    return rotatedBitmap
+}
 fun getBitmapFromUris(context: Context, selectedPhotoUrii: Uri): Bitmap? {
     //val selectedPhotoUri= getUriForFile(context, context.applicationContext.packageName + ".provider", File(selectedPhotoUrii.path))
 
@@ -162,82 +231,9 @@ fun scanFile(ctx: Context, str: String) {
 //    Toast.makeText(ctx,"Saved Image to gallery", Toast.LENGTH_SHORT).show()
 }
 
-fun shareApp(context: Context) {
-    try {
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Document Scanner")
-        var shareMessage = "\nLet me recommend you this application\n\n"
-        shareMessage =
-            """
-                ${shareMessage}https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}
-                
-                
-                """.trimIndent()
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-        context.startActivity(Intent.createChooser(shareIntent, "choose one"))
-    } catch (e: Exception) {
-        //e.toString();
-    }
-}
 
-fun openPrivacyPolicy(context: Context) {
-    val url = "https://appverseltd.blogspot.com/2022/02/document-scanner-privacy-policy.html"
-    val i = Intent(Intent.ACTION_VIEW)
-    i.data = Uri.parse(url)
-    context.startActivity(i)
-}
 
-fun rate_dialog(context: Context) {
 
-     val sharedPrefFile = "kotlinsharedpreference"
-     lateinit var sharedPreferences: SharedPreferences
-    val dialog = Dialog(context)
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    dialog.setContentView(R.layout.rate_us_dialog)
-    val simpleRatingBar: ScaleRatingBar = dialog.findViewById(R.id.simpleRatingBar)
-    val rating_btn = dialog.findViewById(R.id.rating_btn) as TextView
-    simpleRatingBar.setOnRatingChangeListener { ratingBar, rating, fromUser -> //
-        if (rating.toDouble() == 5.0) {
-            rating_btn.text = "RATE US"
-        } else {
-            rating_btn.text = "FEEDBACK"
-        }
-    }
-    rating_btn.setOnClickListener {
-        dialog.dismiss()
-        if (rating_btn.text.toString() == "RATE US") {
-            val uri =
-                Uri.parse("market://details?id=" + context.applicationContext.packageName)
-            val rateAppIntent = Intent(Intent.ACTION_VIEW, uri)
-            if (context.packageManager.queryIntentActivities(rateAppIntent, 0).size > 0) {
-                context.startActivity(rateAppIntent)
-            }
-        } else {
-            val intent = Intent(Intent.ACTION_SENDTO)
-            intent.putExtra(Intent.EXTRA_SUBJECT, "BG Remover Feedback")
-            intent.setData(Uri.parse("mailto:")); // or just "mailto:" for blank
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf<String>("default@recipient.com"))
-
-            if (intent.resolveActivity(context.packageManager) != null) {
-                context.startActivity(intent)
-            }
-        }
-
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor =  sharedPreferences.edit()
-        editor.putBoolean("show_rate_us",false)
-        editor.apply()
-        editor.commit()
-
-    }
-    val no = dialog.findViewById(R.id.no) as TextView
-    no.setOnClickListener {
-        dialog.dismiss()
-    }
-
-    dialog.show()
-}
 
 fun backPressDialog(context: Activity) {
 
