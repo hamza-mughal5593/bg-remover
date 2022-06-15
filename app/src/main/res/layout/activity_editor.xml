@@ -268,6 +268,7 @@
                 >
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/color_back"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"

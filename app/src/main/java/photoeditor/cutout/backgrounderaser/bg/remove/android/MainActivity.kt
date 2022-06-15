@@ -27,6 +27,7 @@ import com.google.android.material.navigation.NavigationView
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityMainBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.BottomSheetImagePickerBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor
+import photoeditor.cutout.backgrounderaser.bg.remove.android.util.getBitmapFromContentUri
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.getBitmapFromUri
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.saveCaptureImage
 import java.io.File
@@ -228,7 +229,8 @@ var mImageUri:Uri? = null
 //                if(data.extras !=null)
 //                {
 //                    val image = data.extras!!.get("data")
-    val image = getBitmapFromUri(this,mImageUri!!)
+//    val image = getBitmapFromUri(this,mImageUri!!)
+    val image = getBitmapFromContentUri(this.contentResolver,mImageUri)
 
 
 

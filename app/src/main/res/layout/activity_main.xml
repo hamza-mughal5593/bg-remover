@@ -52,23 +52,13 @@
                 android:layout_height="match_parent">
 
 
-                <ImageView
-                    android:id="@+id/bg_img"
-                    android:layout_width="@dimen/_45sdp"
-                    android:layout_height="@dimen/_45sdp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:layout_weight="1"
-                    android:src="@drawable/remove_bg" />
 
                 <TextView
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/bg_img"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
                     android:gravity="center_vertical"
-                    android:text="BG Remover"
+                    android:text="START"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/_17sdp"
                     android:textStyle="bold" />

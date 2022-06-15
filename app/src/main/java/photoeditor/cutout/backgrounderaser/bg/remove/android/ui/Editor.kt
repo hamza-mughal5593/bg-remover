@@ -55,9 +55,7 @@ class Editor : AppCompatActivity(),
 
         binding.toolbar.next.setOnClickListener {
 
-               val bitmap = viewToBitmap()
-               savingAnimation()
-               saveImage(this, bitmap)
+
 
         }
 
@@ -194,42 +192,17 @@ class Editor : AppCompatActivity(),
 //    }
 
     private fun bgClickHandlers() {
-        binding.colorBg.setOnClickListener {
-
-            val colors = initializeColorsList()
-            initializeBgRecyclerView(colors,"Colors")
-
-            binding.bgsMainLayout.visibility = View.GONE
-            binding.colorsMainsLayout.visibility = View.VISIBLE
-
-            binding.bgType.text = "Colors"
 
 
-        }
+        val images = initializeImagesList()
+        initializeBgRecyclerView(images,"Images")
 
-        binding.gradientBg.setOnClickListener {
+        binding.bgsMainLayout.visibility = View.GONE
+        binding.colorsMainsLayout.visibility = View.VISIBLE
 
-            val gradients = initializeGradientList()
-            initializeBgRecyclerView(gradients,"Gradients")
+        binding.bgType.text = "Images"
 
-            binding.bgsMainLayout.visibility = View.GONE
-            binding.colorsMainsLayout.visibility = View.VISIBLE
-
-            binding.bgType.text = "Gradient"
-
-        }
-
-        binding.imagesBg.setOnClickListener {
-
-            val images = initializeImagesList()
-            initializeBgRecyclerView(images,"Images")
-
-            binding.bgsMainLayout.visibility = View.GONE
-            binding.colorsMainsLayout.visibility = View.VISIBLE
-
-            binding.bgType.text = "Images"
-
-        }
+        binding.bgMain.setBackgroundResource(R.drawable.bg1)
 
         binding.bgClose.setOnClickListener {
 
@@ -245,8 +218,13 @@ class Editor : AppCompatActivity(),
 
         }
         binding.colorNext.setOnClickListener {
-            binding.bgsMainLayout.visibility = View.VISIBLE
-            binding.colorsMainsLayout.visibility = View.GONE
+
+
+
+
+            val bitmap = viewToBitmap()
+            savingAnimation()
+            saveImage(this, bitmap)
         }
 
     }

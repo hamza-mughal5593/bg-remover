@@ -30,6 +30,9 @@ import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor
 import java.io.*
 import java.util.*
 import kotlin.math.roundToInt
+import android.content.Intent
+import android.widget.EditText
+import android.widget.Toast
 
 
 fun checkRAM(context: Context): Int {
@@ -211,6 +214,10 @@ fun saveImage (context: Activity,bitmap:Bitmap)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.flush()
         fileOutputStream.close()
+        context.runOnUiThread(Runnable {
+            saveform(context,mediaFile)        })
+
+
         withContext(Main){
             scanFile(context,mediaFile.absolutePath)
         }
@@ -233,6 +240,52 @@ fun scanFile(ctx: Context, str: String) {
 
 
 
+fun saveform(context: Activity, mediaFile: File) {
+
+    val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
+// ...Irrelevant code for customizing the buttons and title
+// ...Irrelevant code for customizing the buttons and title
+    val inflater = context.layoutInflater
+    val dialogView: View = inflater.inflate(R.layout.save_form, null)
+    dialogBuilder.setView(dialogView)
+
+    val retry = dialogView.findViewById<View>(R.id.retry) as TextView
+    val send = dialogView.findViewById<View>(R.id.send) as TextView
+    val email = dialogView.findViewById<View>(R.id.email) as EditText
+
+    val alertDialog: AlertDialog = dialogBuilder.create()
+    alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+    alertDialog.setCancelable(false)
+    alertDialog.show()
+    retry.setOnClickListener {
+
+        alertDialog.dismiss()
+        context.finish()
+    }
+
+    send.setOnClickListener {
+
+        if (!email.text.toString().isEmpty()){
+            var  mImageUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", mediaFile)
+
+            val i = Intent(Intent.ACTION_SEND)
+            i.putExtra(Intent.EXTRA_EMAIL, arrayOf(email.text.toString()))
+            i.putExtra(Intent.EXTRA_SUBJECT, "Picture")
+            //Log.d("URI@!@#!#!@##!", Uri.fromFile(pic).toString() + "   " + pic.exists());
+            //Log.d("URI@!@#!#!@##!", Uri.fromFile(pic).toString() + "   " + pic.exists());
+            i.putExtra(Intent.EXTRA_STREAM, mImageUri)
+            i.type = "image/png"
+            context.startActivity(Intent.createChooser(i, "Share you on the jobing"))
+
+            alertDialog.dismiss()
+            context.finish()
+        }else{
+            Toast.makeText(context, "please input email", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+}
 
 
 fun backPressDialog(context: Activity) {
