@@ -3,6 +3,7 @@ package photoeditor.cutout.backgrounderaser.bg.remove.android.util
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.*
+import android.content.pm.ResolveInfo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -25,14 +26,15 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import photoeditor.cutout.backgrounderaser.bg.remove.android.MainActivity
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
 import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor
-import java.io.*
-import java.util.*
+import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.ResultActivity
+import java.io.File
+import java.io.FileDescriptor
+import java.io.FileOutputStream
+import java.io.IOException
 import kotlin.math.roundToInt
-import android.content.Intent
-import android.widget.EditText
-import android.widget.Toast
 
 
 fun checkRAM(context: Context): Int {
@@ -49,7 +51,7 @@ fun resizeImage(available: Int, bitmapWidth: Int, bitmapHeight: Int): Bitmap {
     val maxValue = if (available == 1) {
         1000
     } else {
-        500 + (250 * available)
+        100 + (250 * available)
     }
 
     return if (bitmapHeight > maxValue || bitmapWidth > maxValue) {
@@ -205,7 +207,7 @@ fun saveCaptureImage(context: Context, bitmapImage: Bitmap, name: String): Strin
 }
 
 
-fun saveImage (context: Activity,bitmap:Bitmap)
+fun saveImage (context: Activity, bitmap: Bitmap, toString: String)
 {
     val path = getOutputDirectory(context).absolutePath
     CoroutineScope(IO).launch{
@@ -214,11 +216,17 @@ fun saveImage (context: Activity,bitmap:Bitmap)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.flush()
         fileOutputStream.close()
-        context.runOnUiThread(Runnable {
-            saveform(context,mediaFile)        })
+
+            saveform(context,mediaFile,toString)
 
 
         withContext(Main){
+
+            val intent = Intent(context, ResultActivity::class.java)
+            context.startActivity(intent)
+            context.finish()
+
+
             scanFile(context,mediaFile.absolutePath)
         }
     }
@@ -240,51 +248,73 @@ fun scanFile(ctx: Context, str: String) {
 
 
 
-fun saveform(context: Activity, mediaFile: File) {
+fun saveform(context: Activity, mediaFile: File, toString: String) {
 
-    val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
-// ...Irrelevant code for customizing the buttons and title
-// ...Irrelevant code for customizing the buttons and title
-    val inflater = context.layoutInflater
-    val dialogView: View = inflater.inflate(R.layout.save_form, null)
-    dialogBuilder.setView(dialogView)
 
-    val retry = dialogView.findViewById<View>(R.id.retry) as TextView
-    val send = dialogView.findViewById<View>(R.id.send) as TextView
-    val email = dialogView.findViewById<View>(R.id.email) as EditText
 
-    val alertDialog: AlertDialog = dialogBuilder.create()
-    alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-    alertDialog.setCancelable(false)
-    alertDialog.show()
-    retry.setOnClickListener {
 
-        alertDialog.dismiss()
-        context.finish()
-    }
 
-    send.setOnClickListener {
+//
+//   var sad =  SendMail()
+//
+//
+//    try {
+//        val sender = GMailSender("hamza.mughal5593@yahoo.com", "1qaz2wsx!@#EDC")
+//        sender.sendMail(
+//            "This is Subject",
+//            "This is Body",
+//            "hamza.mughal5593@yahoo.com",
+//            "hamza.mughal5593@gmail.com"
+//        )
+//    } catch (e: java.lang.Exception) {
+//        Log.e("SendMail", e.message, e)
+//    }
 
-        if (!email.text.toString().isEmpty()){
-            var  mImageUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", mediaFile)
 
-            val i = Intent(Intent.ACTION_SEND)
-            i.putExtra(Intent.EXTRA_EMAIL, arrayOf(email.text.toString()))
-            i.putExtra(Intent.EXTRA_SUBJECT, "Picture")
-            //Log.d("URI@!@#!#!@##!", Uri.fromFile(pic).toString() + "   " + pic.exists());
-            //Log.d("URI@!@#!#!@##!", Uri.fromFile(pic).toString() + "   " + pic.exists());
-            i.putExtra(Intent.EXTRA_STREAM, mImageUri)
-            i.type = "image/png"
-            context.startActivity(Intent.createChooser(i, "Share you on the jobing"))
-
-            alertDialog.dismiss()
-            context.finish()
-        }else{
-            Toast.makeText(context, "please input email", Toast.LENGTH_SHORT).show()
-        }
-
-    }
+//    val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
+//// ...Irrelevant code for customizing the buttons and title
+//// ...Irrelevant code for customizing the buttons and title
+//    val inflater = context.layoutInflater
+//    val dialogView: View = inflater.inflate(R.layout.save_form, null)
+//    dialogBuilder.setView(dialogView)
+//
+//    val retry = dialogView.findViewById<View>(R.id.retry) as TextView
+//    val send = dialogView.findViewById<View>(R.id.send) as TextView
+//    val email = dialogView.findViewById<View>(R.id.email) as EditText
+//
+//    val alertDialog: AlertDialog = dialogBuilder.create()
+//    alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//
+//    alertDialog.setCancelable(false)
+//    alertDialog.show()
+//    retry.setOnClickListener {
+//
+//        alertDialog.dismiss()
+//        context.finish()
+//    }
+//
+//    send.setOnClickListener {
+//
+//        if (!email.text.toString().isEmpty()){
+//            var  mImageUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", mediaFile)
+//
+//            val i = Intent(Intent.ACTION_SEND)
+//            i.putExtra(Intent.EXTRA_EMAIL, arrayOf(email.text.toString()))
+//            i.putExtra(Intent.EXTRA_SUBJECT, "Picture")
+//            //Log.d("URI@!@#!#!@##!", Uri.fromFile(pic).toString() + "   " + pic.exists());
+//            //Log.d("URI@!@#!#!@##!", Uri.fromFile(pic).toString() + "   " + pic.exists());
+//            i.putExtra(Intent.EXTRA_STREAM, mImageUri)
+//            i.type = "image/png"
+//            context.startActivity(Intent.createChooser(i, "Share you on the jobing"))
+//
+//            alertDialog.dismiss()
+//            context.finish()
+//        }else{
+//            Toast.makeText(context, "please input email", Toast.LENGTH_SHORT).show()
+//        }
+//
+//    }
 }
 
 

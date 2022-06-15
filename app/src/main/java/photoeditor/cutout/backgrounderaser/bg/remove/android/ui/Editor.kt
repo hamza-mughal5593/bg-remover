@@ -1,44 +1,39 @@
 package photoeditor.cutout.backgrounderaser.bg.remove.android.ui
 
+import android.animation.Animator
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
 import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.*
-import photoeditor.cutout.backgrounderaser.bg.remove.android.util.*
-
-import android.graphics.Canvas
-import android.animation.Animator
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityEditorBinding
+import photoeditor.cutout.backgrounderaser.bg.remove.android.util.*
 
 
 class Editor : AppCompatActivity(),
-    BgAdapter.clikHandleBg,  OnTouchListener {
+    BgAdapter.clikHandleBg, OnTouchListener {
 
     private lateinit var binding: ActivityEditorBinding
 
     var firsTime = true
-
-
 
 
     var imagePath: String = ""
@@ -53,24 +48,19 @@ class Editor : AppCompatActivity(),
         changeStatusBarColor()
         startEditor()
 
-        binding.toolbar.next.setOnClickListener {
 
-
-
-        }
-
-        binding.toolbar.back.setOnClickListener {
-            backPressDialog(this)
-
-        }
+//        binding.toolbar.back.setOnClickListener {
+//            backPressDialog(this)
+//
+//        }
 
 //        val iv_image = StickerViewImage(this@Editor)
 //        iv_image.setOnTouchListener(this);
 
     }
-    fun savingAnimation ()
-    {
-        binding.saving.visibility=View.VISIBLE
+
+    fun savingAnimation() {
+        binding.saving.visibility = View.VISIBLE
         binding.saving.playAnimation()
         binding.saving.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
@@ -78,7 +68,7 @@ class Editor : AppCompatActivity(),
 
             override fun onAnimationEnd(animation: Animator) {
                 Toast.makeText(this@Editor, "Saved Successfully", Toast.LENGTH_SHORT).show()
-                binding.saving.visibility=View.GONE
+                binding.saving.visibility = View.GONE
 
             }
 
@@ -177,8 +167,6 @@ class Editor : AppCompatActivity(),
 //        editorOptions.add(GenerealEditorModel("Crop", R.drawable.ic_crop))
 //        editorOptions.add(GenerealEditorModel("Backgrounds", R.drawable.ic_background))
 
-        binding.recyclerEditingOptions.visibility = View.GONE
-        binding.bgsMainLayout.visibility = View.VISIBLE
         bgClickHandlers()
 
     }
@@ -195,45 +183,55 @@ class Editor : AppCompatActivity(),
 
 
         val images = initializeImagesList()
-        initializeBgRecyclerView(images,"Images")
 
-        binding.bgsMainLayout.visibility = View.GONE
-        binding.colorsMainsLayout.visibility = View.VISIBLE
+        binding.saveMain.visibility = View.GONE
+        binding.optionsLayout.visibility = View.VISIBLE
 
-        binding.bgType.text = "Images"
-
-        binding.bgMain.setBackgroundResource(R.drawable.bg1)
-
-        binding.bgClose.setOnClickListener {
-
-            binding.bgsMainLayout.visibility = View.GONE
-            binding.recyclerEditingOptions.visibility = View.VISIBLE
+        binding.image1.setOnClickListener {
+            binding.bgMain.setBackgroundResource(R.drawable.bg1)
+            binding.optionsLayout.visibility = View.GONE
+            binding.saveMain.visibility = View.VISIBLE
+        }
+        binding.image2.setOnClickListener {
+            binding.bgMain.setBackgroundResource(R.drawable.bg2)
+            binding.optionsLayout.visibility = View.GONE
+            binding.saveMain.visibility = View.VISIBLE
         }
 
-        binding.colorBack.setOnClickListener {
-
-            binding.bgsMainLayout.visibility = View.VISIBLE
-            binding.colorsMainsLayout.visibility = View.GONE
-            binding.bgMain.setBackgroundColor(resources.getColor(R.color.transparent))
-
-        }
-        binding.colorNext.setOnClickListener {
 
 
 
+        binding.email.setOnEditorActionListener(
+            OnEditorActionListener { v, actionId, event -> // Identifier of the action. This will be either the identifier you supplied,
+                // or EditorInfo.IME_NULL if being called due to the enter key being pressed.
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || (event.action === KeyEvent.ACTION_DOWN
+                            && event.keyCode === KeyEvent.KEYCODE_ENTER)
+                ) {
 
-            val bitmap = viewToBitmap()
-            savingAnimation()
-            saveImage(this, bitmap)
-        }
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    imm?.hideSoftInputFromWindow(v.windowToken, 0)
+
+                    val bitmap = viewToBitmap()
+                    savingAnimation()
+                    saveImage(this, bitmap, binding.email.toString())
+                    return@OnEditorActionListener true
+                }
+                // Return true if you have consumed the action, else false.
+                false
+            })
+
+//        binding.colorNext.setOnClickListener {
+//
+//
+//
+//
+//            val bitmap = viewToBitmap()
+//            savingAnimation()
+//            saveImage(this, bitmap)
+//        }
 
     }
 
-    private fun initializeBgRecyclerView(filters: ArrayList<Int>,type:String) {
-        binding.recyclerColors.layoutManager =
-            LinearLayoutManager(this@Editor, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerColors.adapter = BgAdapter(this@Editor, filters,type, this)
-    }
 
     override fun onClickBg(bg: Int, position: Int) {
         binding.bgMain.setBackgroundResource(bg)

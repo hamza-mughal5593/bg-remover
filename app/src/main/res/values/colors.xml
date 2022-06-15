@@ -22,4 +22,8 @@
     <color name="color_9">#FFC107</color>
     <color name="color_10">#FB4E17</color>
 
+
+    <color name="gray">#9d9d9c</color>
+    <color name="orange">#f28e00</color>
+
 </resources>

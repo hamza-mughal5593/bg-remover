@@ -55,18 +55,16 @@
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/toolbar_activity_main.xml" value="0.27239583333333334" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/layout/toolbar_editor.xml" value="0.358695652173913" />
         <entry key="..\:/Envy/bg_remover_bilals/app/src/main/res/xml/file_paths.xml" value="0.25271739130434784" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/drawable/btn_border.xml" value="0.247" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/drawable/g1.xml" value="0.247" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/drawable/g2.xml" value="0.247" />
-        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_editor.xml" value="0.36666666666666664" />
-        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_editor.xml" value="0.12" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_result.xml" value="0.12" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_splash.xml" value="0.12" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/recycler_bg.xml" value="0.18333333333333332" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/toolbar_activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/toolbar_editor.xml" value="0.36666666666666664" />
-        <entry key="app/src/main/res/layout/activity_editor.xml" value="0.2953703703703704" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/dialog_sure.xml" value="0.2953703703703704" />
-        <entry key="app/src/main/res/layout/save_form.xml" value="0.2953703703703704" />
-        <entry key="app/src/main/res/layout/toolbar_activity_main.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/toolbar_editor.xml" value="0.2953703703703704" />
       </map>
     </option>
   </component>
