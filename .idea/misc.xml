@@ -58,13 +58,20 @@
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/drawable/btn_border.xml" value="0.247" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/drawable/g1.xml" value="0.247" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/drawable/g2.xml" value="0.247" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/drawable/ic_cross.xml" value="0.247" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_editor.xml" value="0.12" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_remove_bg.xml" value="0.18333333333333332" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_result.xml" value="0.12" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/activity_splash.xml" value="0.12" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/bottom_sheet_image_picker.xml" value="0.18333333333333332" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/clipart.xml" value="0.18333333333333332" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/clipart_text.xml" value="0.18333333333333332" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/recycler_bg.xml" value="0.18333333333333332" />
-        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/toolbar_activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/recycler_filters.xml" value="0.1" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/toolbar_activity_main.xml" value="0.25" />
         <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/layout/toolbar_editor.xml" value="0.36666666666666664" />
+        <entry key="..\:/Test/bg-remover-bilal/app/src/main/res/menu/activity_main_drawer_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -3,8 +3,11 @@ package photoeditor.cutout.backgrounderaser.bg.remove.android.ui
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
@@ -13,17 +16,20 @@ import android.view.View
 import android.view.View.OnTouchListener
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import io.paperdb.Paper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import photoeditor.cutout.backgrounderaser.bg.remove.android.MainActivity
 import photoeditor.cutout.backgrounderaser.bg.remove.android.R
-import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.*
+import photoeditor.cutout.backgrounderaser.bg.remove.android.adapters.BgAdapter
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityEditorBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.util.*
 
@@ -43,7 +49,7 @@ class Editor : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         binding = ActivityEditorBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+Paper.init(this)
         System.loadLibrary("NativeImageProcessor");
         changeStatusBarColor()
         startEditor()
@@ -56,6 +62,15 @@ class Editor : AppCompatActivity(),
 
 //        val iv_image = StickerViewImage(this@Editor)
 //        iv_image.setOnTouchListener(this);
+
+
+        binding.retakePhoto.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("retake", "true")
+            startActivity(intent)
+            finish()
+        }
+
 
     }
 
@@ -160,29 +175,15 @@ class Editor : AppCompatActivity(),
     }
 
     private fun initializeEditorOptionsList() {
-//        editorOptions.add(GenerealEditorModel("Filter", R.drawable.ic_effect))
-//        editorOptions.add(GenerealEditorModel("Stickers", R.drawable.ic_sticker))
-        // editorOptions.add(GenerealEditorModel("Text", R.drawable.ic_text))
-//        editorOptions.add(GenerealEditorModel("Adjustments", R.drawable.ic_adjustment))
-//        editorOptions.add(GenerealEditorModel("Crop", R.drawable.ic_crop))
-//        editorOptions.add(GenerealEditorModel("Backgrounds", R.drawable.ic_background))
 
         bgClickHandlers()
 
     }
 
 
-//
-//    override fun onBgClick() {
-//        binding.recyclerEditingOptions.visibility = View.GONE
-//        binding.bgsMainLayout.visibility = View.VISIBLE
-//        bgClickHandlers()
-//    }
-
+    @SuppressLint("ClickableViewAccessibility")
     private fun bgClickHandlers() {
 
-
-        val images = initializeImagesList()
 
         binding.saveMain.visibility = View.GONE
         binding.optionsLayout.visibility = View.VISIBLE
@@ -197,8 +198,104 @@ class Editor : AppCompatActivity(),
             binding.optionsLayout.visibility = View.GONE
             binding.saveMain.visibility = View.VISIBLE
         }
+        binding.image3.setOnClickListener {
+            binding.bgMain.setBackgroundResource(R.drawable.bg3)
+            binding.optionsLayout.visibility = View.GONE
+            binding.saveMain.visibility = View.VISIBLE
+        }
+        binding.image4.setOnClickListener {
+            binding.bgMain.setBackgroundResource(R.drawable.bg4)
+            binding.optionsLayout.visibility = View.GONE
+            binding.saveMain.visibility = View.VISIBLE
+        }
+        binding.image5.setOnClickListener {
+            binding.bgMain.setBackgroundResource(R.drawable.bgend)
+            binding.optionsLayout.visibility = View.GONE
+            binding.saveMain.visibility = View.VISIBLE
+        }
 
 
+
+        binding.image1.setOnTouchListener(OnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    val view: ImageView = v as ImageView
+                    //overlay is black with transparency of 0x77 (119)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    val view: ImageView = v as ImageView
+                    //clear the overlay
+                    view.setBackgroundColor(Color.TRANSPARENT)
+                }
+            }
+            false
+        })
+        binding.image2.setOnTouchListener(OnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    val view: ImageView = v as ImageView
+                    //overlay is black with transparency of 0x77 (119)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    val view: ImageView = v as ImageView
+                    //clear the overlay
+                    view.setBackgroundColor(Color.TRANSPARENT)
+                }
+            }
+            false
+        })
+        binding.image3.setOnTouchListener(OnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    val view: ImageView = v as ImageView
+                    //overlay is black with transparency of 0x77 (119)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    val view: ImageView = v as ImageView
+                    //clear the overlay
+                    view.setBackgroundColor(Color.TRANSPARENT)
+                }
+            }
+            false
+        })
+        binding.image4.setOnTouchListener(OnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    val view: ImageView = v as ImageView
+                    //overlay is black with transparency of 0x77 (119)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    val view: ImageView = v as ImageView
+                    //clear the overlay
+                    view.setBackgroundColor(Color.TRANSPARENT)
+                }
+            }
+            false
+        })
+        binding.image5.setOnTouchListener(OnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    val view: ImageView = v as ImageView
+                    //overlay is black with transparency of 0x77 (119)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    val view: ImageView = v as ImageView
+                    //clear the overlay
+                    view.setBackgroundColor(Color.TRANSPARENT)
+                }
+            }
+            false
+        })
+
+
+        var list: ArrayList<String>? = null
+        list = ArrayList<String>()
+        list = Paper.book().read("emaillist", list)
 
 
         binding.email.setOnEditorActionListener(
@@ -208,12 +305,15 @@ class Editor : AppCompatActivity(),
                             && event.keyCode === KeyEvent.KEYCODE_ENTER)
                 ) {
 
+
+                    list?.add(binding.email.text.toString())
+                    Paper.book().write("emaillist", list!!)
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                     imm?.hideSoftInputFromWindow(v.windowToken, 0)
 
                     val bitmap = viewToBitmap()
                     savingAnimation()
-                    saveImage(this, bitmap, binding.email.toString())
+                    saveImage(this, bitmap, binding.email.text.toString())
                     return@OnEditorActionListener true
                 }
                 // Return true if you have consumed the action, else false.
@@ -241,7 +341,6 @@ class Editor : AppCompatActivity(),
         var bitmap: Bitmap? = null
         var filteredImage: Bitmap? = null
         var adjustedImage: Bitmap? = null
-        val addedStickers: ArrayList<ClipArt> = ArrayList()
     }
 
     override fun onBackPressed() {
@@ -252,7 +351,13 @@ class Editor : AppCompatActivity(),
         TODO("Not yet implemented")
     }
 
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 555) {
+            val intent = Intent(this, ResultActivity::class.java)
+            startActivity(intent)
+        }
+    }
 }
 
 

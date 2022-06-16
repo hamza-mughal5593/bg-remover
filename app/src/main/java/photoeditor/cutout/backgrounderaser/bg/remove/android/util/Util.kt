@@ -51,7 +51,7 @@ fun resizeImage(available: Int, bitmapWidth: Int, bitmapHeight: Int): Bitmap {
     val maxValue = if (available == 1) {
         1000
     } else {
-        100 + (250 * available)
+         (180 * available)
     }
 
     return if (bitmapHeight > maxValue || bitmapWidth > maxValue) {
@@ -211,7 +211,7 @@ fun saveImage (context: Activity, bitmap: Bitmap, toString: String)
 {
     val path = getOutputDirectory(context).absolutePath
     CoroutineScope(IO).launch{
-        val mediaFile = File(path,"image ${System.currentTimeMillis()}.png")
+        val mediaFile = File(path,"image ${System.currentTimeMillis()}.jpeg")
         val fileOutputStream = FileOutputStream(mediaFile)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.flush()
@@ -222,9 +222,38 @@ fun saveImage (context: Activity, bitmap: Bitmap, toString: String)
 
         withContext(Main){
 
-            val intent = Intent(context, ResultActivity::class.java)
-            context.startActivity(intent)
-            context.finish()
+
+
+            var  mImageUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", mediaFile)
+            val email = toString
+            Log.e("email", "saveImage: $toString")
+//            val subject = "${resources.getString(R.string.app_name)} Feedback"
+            val subject = "Photo événement pwc 2022"
+            val body = "Bonjour, \n" +
+                    "Trouvez ci-joint votre photo de l'événement PWC 2022 .\n" +
+                    "Merci."
+
+            val selectorIntent = Intent(Intent.ACTION_SENDTO)
+            val urlString =
+                "mailto:" + Uri.encode(email) + "?subject=" + Uri.encode(subject) + "&body=" + Uri.encode(
+                    body
+                )
+            selectorIntent.data = Uri.parse(urlString)
+
+            val emailIntent = Intent(Intent.ACTION_SEND)
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+            emailIntent.putExtra(Intent.EXTRA_TEXT, body)
+            emailIntent.putExtra(Intent.EXTRA_STREAM, mImageUri)
+//            emailIntent.type = "image/png"
+            emailIntent.selector = selectorIntent
+
+            context.startActivityForResult(Intent.createChooser(emailIntent, "Send email"),555)
+
+
+
+
+
 
 
             scanFile(context,mediaFile.absolutePath)

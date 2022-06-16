@@ -8,6 +8,7 @@
     tools:context=".ui.Editor">
 
 <LinearLayout
+    android:visibility="visible"
     android:gravity="center"
     android:orientation="horizontal"
     android:id="@+id/saveMain"
@@ -18,7 +19,7 @@
         android:id="@+id/bg_main"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_200sdp"
-        android:layout_centerVertical="true">
+        >
 
 
         <photoeditor.cutout.backgrounderaser.bg.remove.android.models.StickerViewImage
@@ -41,7 +42,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/_15sdp"
-            android:src="@drawable/close"
             android:visibility="gone" />
 
 
@@ -71,6 +71,35 @@
             android:background="@drawable/btn_border"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/_20sdp"
+            android:id="@+id/retakePhoto"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_border"
+            tools:context=".MainActivity">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:text="reprendre la photo"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold" />
+
+
+
+
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>
@@ -101,8 +130,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp">
+        android:layout_marginStart="@dimen/_60sdp"
+        android:layout_marginEnd="@dimen/_60sdp">
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -110,33 +139,50 @@
             android:scrollbars="none">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <ImageView
+
                     android:id="@+id/image1"
-                    android:layout_width="@dimen/_100sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_width="@dimen/_87sdp"
                     android:layout_height="@dimen/_150sdp"
-                    android:src="@drawable/bg1" />
+                    android:src="@drawable/bg1"
+                     />
 
                 <ImageView
                     android:id="@+id/image2"
-                    android:layout_width="@dimen/_100sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_width="@dimen/_87sdp"
                     android:layout_height="@dimen/_150sdp"
                     android:src="@drawable/bg2" />
 
                 <ImageView
                     android:id="@+id/image3"
-                    android:layout_width="@dimen/_100sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_width="@dimen/_87sdp"
                     android:layout_height="@dimen/_150sdp"
                     android:src="@drawable/bg3" />
-
+                <ImageView
+                    android:id="@+id/image5"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_width="@dimen/_87sdp"
+                    android:layout_height="@dimen/_150sdp"
+                    android:src="@drawable/bgend" />
                 <ImageView
                     android:id="@+id/image4"
-                    android:layout_width="@dimen/_100sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_width="@dimen/_87sdp"
                     android:layout_height="@dimen/_150sdp"
                     android:src="@drawable/bg4" />
+
             </LinearLayout>
         </HorizontalScrollView>
 

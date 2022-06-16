@@ -1,56 +1,90 @@
 package photoeditor.cutout.backgrounderaser.bg.remove.android
 
 import android.Manifest
-import android.R.attr.bitmap
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.view.GravityCompat
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import io.paperdb.Paper
 import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.ActivityMainBinding
-import photoeditor.cutout.backgrounderaser.bg.remove.android.databinding.BottomSheetImagePickerBinding
 import photoeditor.cutout.backgrounderaser.bg.remove.android.ui.Editor
-import photoeditor.cutout.backgrounderaser.bg.remove.android.util.*
+import photoeditor.cutout.backgrounderaser.bg.remove.android.util.getBitmapFromContentUri
+import photoeditor.cutout.backgrounderaser.bg.remove.android.util.getOutputDirectory
+import photoeditor.cutout.backgrounderaser.bg.remove.android.util.saveCaptureImage
+import java.io.BufferedWriter
 import java.io.File
-import java.io.FileOutputStream
+import java.io.FileWriter
 import java.io.IOException
 
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var backPress: Boolean = false
-    var bgRemover=true
-    var actionBarDrawerToggle: ActionBarDrawerToggle? = null
+    var bgRemover = true
     private val PERMISSION_REQUEST_CODE = 200
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Paper.init(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        val id = intent.getStringExtra("retake")
+        if (id != null)
+            if (id == "true") {
+                if (checkPermission()) {
+                    openCamera()
+
+                } else {
+                    requestPermission()
+                }
+            }
+
+
+binding.download.setOnClickListener {
+    try {
+
+        var list: ArrayList<String>? = null
+        list = ArrayList<String>()
+        list = Paper.book().read("emaillist", list)
+
+        val joined = TextUtils.join(", ", list!!)
+
+        val path = getOutputDirectory(this).absolutePath
+        val file = File(path,"email_list.csv")
+//            val file: File = File(fileName.toString() + ".csv")
+        // if file doesnt exists, then create it
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+        val fw = FileWriter(file.absoluteFile)
+        val bw = BufferedWriter(fw)
+        bw.write(joined)
+
+        bw.close()
+        Toast.makeText(this, "CSV file saved", Toast.LENGTH_SHORT).show()
+
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+}
+
+
+
 
 
         binding.opencam.setOnClickListener {
@@ -81,28 +115,23 @@ class MainActivity : AppCompatActivity(){
 //                var sad =  SendMail()
 //            }
 
-            if (checkPermission())
-            {
+            if (checkPermission()) {
                 openCamera()
 
-            }else
-            {
+            } else {
                 requestPermission()
             }
         }
 
 
-
     }
 
 
-
-
-
-
-
     private fun checkPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestPermission() {
@@ -119,20 +148,16 @@ class MainActivity : AppCompatActivity(){
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == PERMISSION_REQUEST_CODE)
-        {
-            if(grantResults.size >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera()
-            }else
-            {
+            } else {
                 Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    fun openCamera ()
-    {
+    fun openCamera() {
 //        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 //        cameraIntent.action = MediaStore.EXTRA_OUTPUT
 //        startActivityForResult(cameraIntent, 2)
@@ -156,53 +181,47 @@ class MainActivity : AppCompatActivity(){
 
 
     }
-var mImageUri:Uri? = null
 
+    var mImageUri: Uri? = null
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         try {
 
-            if (requestCode == 1 && data != null)
-            {
+            if (requestCode == 1 && data != null) {
                 if (data.data != null) {
                     val imagePath: String = data.data!!.toString()
 
                     val intent = Intent(this, Editor::class.java)
 
-                    if(bgRemover)
-                      {
-                          intent.putExtra("remove_bg", true)
-                      }else
-                      {
-                          intent.putExtra("remove_bg", false)
-                      }
+                    if (bgRemover) {
+                        intent.putExtra("remove_bg", true)
+                    } else {
+                        intent.putExtra("remove_bg", false)
+                    }
                     intent.putExtra("path", imagePath)
                     startActivity(intent)
 
                 }
-            }else if (requestCode == 2)
-            {
+            } else if (requestCode == 2) {
 //                if(data.extras !=null)
 //                {
 //                    val image = data.extras!!.get("data")
 //    val image = getBitmapFromUri(this,mImageUri!!)
-    val image = getBitmapFromContentUri(this.contentResolver,mImageUri)
+                val image = getBitmapFromContentUri(this.contentResolver, mImageUri)
 
 
 
-                    if(bgRemover)
-                    {
-                        val intent = Intent(this, Editor::class.java)
-                        intent.putExtra("path", saveCaptureImage(this,(image) as Bitmap,"name"))
-                        startActivity(intent)
-                    }else
-                    {
-                        val intent = Intent(this, Editor::class.java)
-                        intent.putExtra("path", saveCaptureImage(this,(image) as Bitmap,"name"))
-                        startActivity(intent)
-                    }
+                if (bgRemover) {
+                    val intent = Intent(this, Editor::class.java)
+                    intent.putExtra("path", saveCaptureImage(this, (image) as Bitmap, "name"))
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(this, Editor::class.java)
+                    intent.putExtra("path", saveCaptureImage(this, (image) as Bitmap, "name"))
+                    startActivity(intent)
+                }
 //                }
 
             }

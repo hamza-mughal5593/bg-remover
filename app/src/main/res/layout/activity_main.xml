@@ -37,6 +37,13 @@
 
 </RelativeLayout>
 
+<ImageView
+    android:id="@+id/download"
+    android:layout_margin="@dimen/_10sdp"
+    android:layout_alignParentBottom="true"
+    android:src="@drawable/ic_baseline_arrow_circle_down_24"
+    android:layout_width="@dimen/_30sdp"
+    android:layout_height="@dimen/_30sdp"/>
 
 
 </RelativeLayout>
