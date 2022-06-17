@@ -8,44 +8,85 @@
     tools:context=".ui.Editor">
 
 <LinearLayout
-    android:visibility="visible"
+    android:visibility="gone"
     android:gravity="center"
     android:orientation="horizontal"
     android:id="@+id/saveMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:background="@color/orange"
-        android:id="@+id/bg_main"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_200sdp"
-        >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:padding="@dimen/_3sdp"
+            android:background="@color/orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+
+                android:id="@+id/bg_main"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_200sdp"
+                >
 
 
-        <photoeditor.cutout.backgrounderaser.bg.remove.android.models.StickerViewImage
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="matrix" />
+                <photoeditor.cutout.backgrounderaser.bg.remove.android.models.StickerViewImage
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="matrix" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/switchView"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:id="@+id/change_bg"
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/switchView"
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/_15sdp"
-            android:visibility="gone" />
+            android:background="@drawable/btn_border"
+            tools:context=".MainActivity">
 
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="Changement de fond"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_marginStart="@dimen/_20sdp"
         android:gravity="center"
@@ -90,7 +131,7 @@
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 android:text="reprendre la photo"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_14sdp"
@@ -125,7 +166,7 @@
 
 
     <RelativeLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/options_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -144,7 +185,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-
+android:background="@color/orange"
                     android:id="@+id/image1"
                     android:padding="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
@@ -154,6 +195,7 @@
                      />
 
                 <ImageView
+                    android:background="@color/orange"
                     android:id="@+id/image2"
                     android:padding="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
@@ -162,6 +204,7 @@
                     android:src="@drawable/bg2" />
 
                 <ImageView
+                    android:background="@color/orange"
                     android:id="@+id/image3"
                     android:padding="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
@@ -169,6 +212,7 @@
                     android:layout_height="@dimen/_150sdp"
                     android:src="@drawable/bg3" />
                 <ImageView
+                    android:background="@color/orange"
                     android:id="@+id/image5"
                     android:padding="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
@@ -176,6 +220,7 @@
                     android:layout_height="@dimen/_150sdp"
                     android:src="@drawable/bgend" />
                 <ImageView
+                    android:background="@color/orange"
                     android:id="@+id/image4"
                     android:padding="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_15sdp"

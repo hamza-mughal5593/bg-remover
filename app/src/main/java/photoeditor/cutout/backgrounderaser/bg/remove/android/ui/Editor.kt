@@ -185,6 +185,13 @@ Paper.init(this)
     private fun bgClickHandlers() {
 
 
+        binding.changeBg.setOnClickListener {
+            binding.optionsLayout.visibility = View.VISIBLE
+            binding.saveMain.visibility = View.GONE
+        }
+
+
+
         binding.saveMain.visibility = View.GONE
         binding.optionsLayout.visibility = View.VISIBLE
 
@@ -221,12 +228,12 @@ Paper.init(this)
                 MotionEvent.ACTION_DOWN -> {
                     val view: ImageView = v as ImageView
                     //overlay is black with transparency of 0x77 (119)
-                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                    view.setBackgroundColor(resources.getColor(R.color.onselect))
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     val view: ImageView = v as ImageView
                     //clear the overlay
-                    view.setBackgroundColor(Color.TRANSPARENT)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
                 }
             }
             false
@@ -236,12 +243,12 @@ Paper.init(this)
                 MotionEvent.ACTION_DOWN -> {
                     val view: ImageView = v as ImageView
                     //overlay is black with transparency of 0x77 (119)
-                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                    view.setBackgroundColor(resources.getColor(R.color.onselect))
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     val view: ImageView = v as ImageView
                     //clear the overlay
-                    view.setBackgroundColor(Color.TRANSPARENT)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
                 }
             }
             false
@@ -251,12 +258,12 @@ Paper.init(this)
                 MotionEvent.ACTION_DOWN -> {
                     val view: ImageView = v as ImageView
                     //overlay is black with transparency of 0x77 (119)
-                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                    view.setBackgroundColor(resources.getColor(R.color.onselect))
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     val view: ImageView = v as ImageView
                     //clear the overlay
-                    view.setBackgroundColor(Color.TRANSPARENT)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
                 }
             }
             false
@@ -266,12 +273,12 @@ Paper.init(this)
                 MotionEvent.ACTION_DOWN -> {
                     val view: ImageView = v as ImageView
                     //overlay is black with transparency of 0x77 (119)
-                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                    view.setBackgroundColor(resources.getColor(R.color.onselect))
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     val view: ImageView = v as ImageView
                     //clear the overlay
-                    view.setBackgroundColor(Color.TRANSPARENT)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
                 }
             }
             false
@@ -281,12 +288,12 @@ Paper.init(this)
                 MotionEvent.ACTION_DOWN -> {
                     val view: ImageView = v as ImageView
                     //overlay is black with transparency of 0x77 (119)
-                    view.setBackgroundColor(resources.getColor(R.color.orange))
+                    view.setBackgroundColor(resources.getColor(R.color.onselect))
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     val view: ImageView = v as ImageView
                     //clear the overlay
-                    view.setBackgroundColor(Color.TRANSPARENT)
+                    view.setBackgroundColor(resources.getColor(R.color.orange))
                 }
             }
             false

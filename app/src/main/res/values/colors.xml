@@ -25,5 +25,6 @@
 
     <color name="gray">#9d9d9c</color>
     <color name="orange">#f28e00</color>
+    <color name="onselect">#EF3A2B</color>
 
 </resources>
