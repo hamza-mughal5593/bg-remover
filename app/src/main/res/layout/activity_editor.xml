@@ -4,29 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main"
+    android:background="@drawable/bg_whitee"
     tools:context=".ui.Editor">
 
 <LinearLayout
     android:visibility="gone"
     android:gravity="center"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:id="@+id/saveMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
+            android:layout_gravity="center_horizontal"
             android:padding="@dimen/_3sdp"
-            android:background="@color/orange"
+            android:background="@color/lightcolor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <RelativeLayout
 
                 android:id="@+id/bg_main"
-                android:layout_width="@dimen/_150sdp"
+                android:layout_width="@dimen/_99sdp"
                 android:layout_height="@dimen/_200sdp"
                 >
 
@@ -56,91 +57,82 @@
 
             </RelativeLayout>
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:id="@+id/change_bg"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_border"
-            tools:context=".MainActivity">
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:text="Changement de fond"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
-
-
-
-
-        </RelativeLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginStart="@dimen/_20sdp"
         android:gravity="center"
         android:layout_width="@dimen/_200sdp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
+        <LinearLayout
+android:layout_marginVertical="@dimen/_20sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Saisire votre mail ici"
-            android:textColor="@color/orange"
-            android:textSize="@dimen/_15sdp"/>
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/change_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:context=".MainActivity">
+
+
+                <ImageView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/chng_bg"
+                    android:text="Changement de fond"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/retakePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:context=".MainActivity">
+
+
+                <ImageView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/retake_ic"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
+
+
+
+            </RelativeLayout>
+        </LinearLayout>
         <EditText
             android:id="@+id/email"
             android:textColor="@color/black"
-            android:layout_marginTop="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:paddingTop="@dimen/_5sdp"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
+            android:inputType="text"
             android:maxLines="1"
+            android:gravity="center_horizontal"
+            android:hint="Saisire votre mail ici"
             android:background="@drawable/btn_border"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
 
-        <RelativeLayout
-            android:layout_marginTop="@dimen/_20sdp"
-            android:id="@+id/retakePhoto"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_border"
-            tools:context=".MainActivity">
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:text="reprendre la photo"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_14sdp"
-                android:textStyle="bold" />
-
-
-
-
-        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>
@@ -165,15 +157,24 @@
         app:lottie_rawRes="@raw/loading" />
 
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:visibility="visible"
         android:id="@+id/options_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="@dimen/_60sdp"
-        android:layout_marginEnd="@dimen/_60sdp">
-
+        android:layout_marginHorizontal="@dimen/_10sdp">
+<TextView
+    android:layout_marginBottom="@dimen/_20sdp"
+    android:gravity="center_horizontal"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:textColor="@color/text_colorr"
+    android:textSize="@dimen/_18sdp"
+    android:fontFamily="@font/font"
+    android:layout_height="wrap_content"
+    android:text="Choose your background"/>
         <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -185,34 +186,34 @@
                 android:orientation="horizontal">
 
                 <ImageView
-android:background="@color/orange"
                     android:id="@+id/image1"
-                    android:padding="@dimen/_2sdp"
+                    android:layout_width="@dimen/_99sdp"
+                    android:layout_height="@dimen/_200sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
-                    android:layout_width="@dimen/_87sdp"
-                    android:layout_height="@dimen/_150sdp"
-                    android:src="@drawable/bg1"
-                     />
+                    android:background="@color/lightcolor"
+                    android:padding="@dimen/_1sdp"
+                    android:src="@drawable/bg1" />
 
                 <ImageView
-                    android:background="@color/orange"
+                    android:background="@color/lightcolor"
                     android:id="@+id/image2"
-                    android:padding="@dimen/_2sdp"
+                    android:padding="@dimen/_1sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
-                    android:layout_width="@dimen/_87sdp"
-                    android:layout_height="@dimen/_150sdp"
+                    android:layout_width="@dimen/_99sdp"
+                    android:layout_height="@dimen/_200sdp"
                     android:src="@drawable/bg2" />
 
                 <ImageView
-                    android:background="@color/orange"
+                    android:background="@color/lightcolor"
                     android:id="@+id/image3"
-                    android:padding="@dimen/_2sdp"
+                    android:padding="@dimen/_1sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
-                    android:layout_width="@dimen/_87sdp"
-                    android:layout_height="@dimen/_150sdp"
+                    android:layout_width="@dimen/_99sdp"
+                    android:layout_height="@dimen/_200sdp"
                     android:src="@drawable/bg3" />
                 <ImageView
-                    android:background="@color/orange"
+                    android:visibility="gone"
+                    android:background="@color/lightcolor"
                     android:id="@+id/image5"
                     android:padding="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
@@ -220,18 +221,18 @@ android:background="@color/orange"
                     android:layout_height="@dimen/_150sdp"
                     android:src="@drawable/bgend" />
                 <ImageView
-                    android:background="@color/orange"
+                    android:background="@color/lightcolor"
                     android:id="@+id/image4"
-                    android:padding="@dimen/_2sdp"
+                    android:padding="@dimen/_1sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
-                    android:layout_width="@dimen/_87sdp"
-                    android:layout_height="@dimen/_150sdp"
+                    android:layout_width="@dimen/_99sdp"
+                    android:layout_height="@dimen/_200sdp"
                     android:src="@drawable/bg4" />
 
             </LinearLayout>
         </HorizontalScrollView>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

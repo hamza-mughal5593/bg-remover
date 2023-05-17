@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BackgroundRemover">
         <activity
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".ui.SplashActivity"
             android:exported="true" >
@@ -26,19 +26,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".ui.ResultActivity"
             android:exported="false" />
         <activity
             android:name=".ui.Editor"
             android:exported="false"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
 
         </activity>

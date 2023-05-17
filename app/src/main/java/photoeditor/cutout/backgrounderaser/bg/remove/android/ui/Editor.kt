@@ -308,21 +308,25 @@ Paper.init(this)
         binding.email.setOnEditorActionListener(
             OnEditorActionListener { v, actionId, event -> // Identifier of the action. This will be either the identifier you supplied,
                 // or EditorInfo.IME_NULL if being called due to the enter key being pressed.
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || (event.action === KeyEvent.ACTION_DOWN
-                            && event.keyCode === KeyEvent.KEYCODE_ENTER)
-                ) {
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || (event.action === KeyEvent.ACTION_DOWN
+//                            && event.keyCode === KeyEvent.KEYCODE_ENTER)
+//                ) {
 
+if (binding.email.text.toString().isNotEmpty()){
+    list?.add(binding.email.text.toString())
+    Paper.book().write("emaillist", list!!)
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    imm?.hideSoftInputFromWindow(v.windowToken, 0)
 
-                    list?.add(binding.email.text.toString())
-                    Paper.book().write("emaillist", list!!)
-                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                    imm?.hideSoftInputFromWindow(v.windowToken, 0)
+    val bitmap = viewToBitmap()
+    savingAnimation()
+    saveImage(this, bitmap, binding.email.text.toString())
+    return@OnEditorActionListener true
+}else{
+    Toast.makeText(this,"Please input your email",Toast.LENGTH_SHORT).show()
+}
 
-                    val bitmap = viewToBitmap()
-                    savingAnimation()
-                    saveImage(this, bitmap, binding.email.text.toString())
-                    return@OnEditorActionListener true
-                }
+//                }
                 // Return true if you have consumed the action, else false.
                 false
             })

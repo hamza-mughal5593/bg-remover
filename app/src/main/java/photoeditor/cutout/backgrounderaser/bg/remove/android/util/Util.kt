@@ -228,10 +228,8 @@ fun saveImage (context: Activity, bitmap: Bitmap, toString: String)
             val email = toString
             Log.e("email", "saveImage: $toString")
 //            val subject = "${resources.getString(R.string.app_name)} Feedback"
-            val subject = "Photo événement pwc 2022"
-            val body = "Bonjour, \n" +
-                    "Trouvez ci-joint votre photo de l'événement PWC 2022 .\n" +
-                    "Merci."
+            val subject = "RUE Pix"
+            val body = "RUE Pix, \n"
 
             val selectorIntent = Intent(Intent.ACTION_SENDTO)
             val urlString =

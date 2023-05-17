@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/dialog_bg"
+    android:paddingVertical="@dimen/_15sdp"
+    android:layout_marginHorizontal="@dimen/_15sdp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:hint="Email"
+            android:imeOptions="actionDone"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/retry"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:background="@drawable/buttons_bg"
+            android:gravity="center|center_vertical"
+            android:text="Retry"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/send"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_weight="1"
+            android:background="@drawable/buttons_bg"
+            android:gravity="center|center_vertical"
+            android:text="Send"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

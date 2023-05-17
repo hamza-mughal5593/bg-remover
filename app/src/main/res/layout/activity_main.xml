@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_main"
+    android:background="@drawable/bg_whitee"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
@@ -28,7 +28,7 @@
         android:paddingEnd="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp"
         android:text="Prendre  une photo"
-        android:textColor="@color/orange"
+        android:textColor="@color/black"
         android:textSize="@dimen/_17sdp"
         android:textStyle="bold" />
 
