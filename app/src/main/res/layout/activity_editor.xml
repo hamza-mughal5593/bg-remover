@@ -27,13 +27,14 @@
             <RelativeLayout
 
                 android:id="@+id/bg_main"
-                android:layout_width="@dimen/_99sdp"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_350sdp"
                 >
 
 
                 <photoeditor.cutout.backgrounderaser.bg.remove.android.models.StickerViewImage
                     android:id="@+id/image"
+                    android:src="@drawable/bg2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="matrix" />
